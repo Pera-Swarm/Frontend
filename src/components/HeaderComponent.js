@@ -3,7 +3,6 @@ import { Navbar, NavbarBrand } from 'reactstrap';
 import { FaExclamation } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
 
-
 class Header extends Component {
     render() {
         return (
@@ -13,18 +12,21 @@ class Header extends Component {
                         <div className="row">
                             <NavbarBrand className="mr-auto" href="/">
                                 Swarm Admin
-                        </NavbarBrand>
+                            </NavbarBrand>
                         </div>
                         <div className="row row-header">
-                            <span><FaExclamation size={25} /></span>
+                            <span>
+                                <FaExclamation size={25} />
+                            </span>
                             <span>&nbsp;</span>
                             <span>&nbsp;</span>
-                            <span> <FiSettings size={25} /></span>
+                            <span>
+                                {' '}
+                                <FiSettings size={25} />
+                            </span>
                         </div>
                     </div>
                 </Navbar>
-
-
             </>
         );
     }

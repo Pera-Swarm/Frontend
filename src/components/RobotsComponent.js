@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import Select from 'react-select';
-import { Tabs, Tab, Row, Col, Nav } from 'react-bootstrap';
+import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 
 const options = [
     { value: '1', label: '1' },
@@ -12,15 +12,14 @@ const options = [
     { value: '6', label: '6' },
     { value: '7', label: '7' },
     { value: '8', label: '8' },
-    { value: '9', label: '9' },
+    { value: '9', label: '9' }
 ];
-
 
 class Robots extends Component {
     state = {
-        selectedOption: null,
+        selectedOption: null
     };
-    handleChange = selectedOption => {
+    handleChange = (selectedOption) => {
         this.setState({ selectedOption });
         console.log(`Option selected:`, selectedOption);
     };
@@ -33,9 +32,7 @@ class Robots extends Component {
                     <div className="col-12">
                         <div className="container striped bordered hover">
                             <div className="row">
-                                <div className="col-1 col-sm-2">
-                                    Robots
-                                    </div>
+                                <div className="col-1 col-sm-2">Robots</div>
                                 <div className="col-2 col-sm-4">
                                     <Select
                                         style={{ width: '30px' }}
@@ -56,16 +53,24 @@ class Robots extends Component {
                                         <Col sm={3}>
                                             <Nav variant="pills" className="flex-column">
                                                 <Nav.Item>
-                                                    <Nav.Link eventKey="control">Control</Nav.Link>
+                                                    <Nav.Link eventKey="control">
+                                                        Control
+                                                    </Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link eventKey="localization">Localization</Nav.Link>
+                                                    <Nav.Link eventKey="localization">
+                                                        Localization
+                                                    </Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link eventKey="sensors">Sensors</Nav.Link>
+                                                    <Nav.Link eventKey="sensors">
+                                                        Sensors
+                                                    </Nav.Link>
                                                 </Nav.Item>
                                                 <Nav.Item>
-                                                    <Nav.Link eventKey="logs">Logs</Nav.Link>
+                                                    <Nav.Link eventKey="logs">
+                                                        Logs
+                                                    </Nav.Link>
                                                 </Nav.Item>
                                             </Nav>
                                         </Col>
@@ -73,19 +78,63 @@ class Robots extends Component {
                                             <Tab.Content>
                                                 <Tab.Pane eventKey="control">
                                                     <h5>Control</h5>
-                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+                                                    <p>
+                                                        At vero eos et accusamus et iusto
+                                                        odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum
+                                                        deleniti atque corrupti quos
+                                                        dolores et quas molestias
+                                                        excepturi sint occaecati
+                                                        cupiditate non provident,
+                                                        similique sunt in culpa qui
+                                                        officia deserunt mollitia animi,
+                                                        id est laborum et dolorum fuga.
+                                                    </p>
                                                 </Tab.Pane>
                                                 <Tab.Pane eventKey="localization">
                                                     <h5>Localization</h5>
-                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+                                                    <p>
+                                                        At vero eos et accusamus et iusto
+                                                        odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum
+                                                        deleniti atque corrupti quos
+                                                        dolores et quas molestias
+                                                        excepturi sint occaecati
+                                                        cupiditate non provident,
+                                                        similique sunt in culpa qui
+                                                        officia deserunt mollitia animi,
+                                                        id est laborum et dolorum fuga.
+                                                    </p>
                                                 </Tab.Pane>
                                                 <Tab.Pane eventKey="sensors">
                                                     <h5>Sensors</h5>
-                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+                                                    <p>
+                                                        At vero eos et accusamus et iusto
+                                                        odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum
+                                                        deleniti atque corrupti quos
+                                                        dolores et quas molestias
+                                                        excepturi sint occaecati
+                                                        cupiditate non provident,
+                                                        similique sunt in culpa qui
+                                                        officia deserunt mollitia animi,
+                                                        id est laborum et dolorum fuga.
+                                                    </p>
                                                 </Tab.Pane>
                                                 <Tab.Pane eventKey="logs">
                                                     <h5>Logs</h5>
-                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+                                                    <p>
+                                                        At vero eos et accusamus et iusto
+                                                        odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum
+                                                        deleniti atque corrupti quos
+                                                        dolores et quas molestias
+                                                        excepturi sint occaecati
+                                                        cupiditate non provident,
+                                                        similique sunt in culpa qui
+                                                        officia deserunt mollitia animi,
+                                                        id est laborum et dolorum fuga.
+                                                    </p>
                                                 </Tab.Pane>
                                             </Tab.Content>
                                         </Col>
@@ -101,10 +150,7 @@ class Robots extends Component {
                         <br></br>
                         <br></br>
                         <br></br>
-
                     </div>
-
-
                 </div>
             </div>
         );

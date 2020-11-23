@@ -33,27 +33,31 @@ class Header extends Component {
                                     <NavItem>
                                         <NavLink className="nav-link" to="/home">
                                             <span className="fa fa-home fa-lg"></span>Home
-                                </NavLink>
+                                        </NavLink>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink className="nav-link" to="/manager">
-                                            <span className="fa fa-info fa-lg"></span>Manager
-                                </NavLink>
+                                            <span className="fa fa-info fa-lg"></span>
+                                            Manager
+                                        </NavLink>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink className="nav-link" to="/visualizer">
-                                            <span className="fa fa-list fa-lg"></span>Visualizer
-                                </NavLink>
+                                            <span className="fa fa-list fa-lg"></span>
+                                            Visualizer
+                                        </NavLink>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink className="nav-link" to="/robots">
-                                            <span className="fa fa-address-card fa-lg"></span>Robots
-                                </NavLink>
+                                            <span className="fa fa-address-card fa-lg"></span>
+                                            Robots
+                                        </NavLink>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink className="nav-link" to="/settings">
-                                            <span className="fa fa-list fa-lg"></span>Settings
-                                </NavLink>
+                                            <span className="fa fa-list fa-lg"></span>
+                                            Settings
+                                        </NavLink>
                                     </NavItem>
                                 </Nav>
                             </Collapse>
