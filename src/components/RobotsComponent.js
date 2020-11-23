@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import Select from 'react-select';
-import { Tabs, Tab, Row, Col, Nav } from 'react-bootstrap';
+import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 
 const options = [
     { value: '1', label: '1' },
