@@ -10,7 +10,7 @@ class Visualizer extends Component {
                     <div className="row row-header">
                         <div className="col-12">
                             <Iframe
-                                url="http://ce-projects.nuwanjaliyagoda.com/docs/github_projects"
+                                url="https://pera-swarm.ce.pdn.ac.lk/visualizer/"
                                 width="100%"
                                 height="450px"
                                 id="myId"
