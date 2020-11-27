@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/swarm-admin/static/css/main.bfff5196.chunk.css",
-    "main.js": "/swarm-admin/static/js/main.818aa31c.chunk.js",
-    "main.js.map": "/swarm-admin/static/js/main.818aa31c.chunk.js.map",
+    "main.js": "/swarm-admin/static/js/main.423085e2.chunk.js",
+    "main.js.map": "/swarm-admin/static/js/main.423085e2.chunk.js.map",
     "runtime-main.js": "/swarm-admin/static/js/runtime-main.8603cd29.js",
     "runtime-main.js.map": "/swarm-admin/static/js/runtime-main.8603cd29.js.map",
     "static/css/2.1a02f21c.chunk.css": "/swarm-admin/static/css/2.1a02f21c.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.1a02f21c.chunk.css",
     "static/js/2.d4e29a29.chunk.js",
     "static/css/main.bfff5196.chunk.css",
-    "static/js/main.818aa31c.chunk.js"
+    "static/js/main.423085e2.chunk.js"
   ]
 }
