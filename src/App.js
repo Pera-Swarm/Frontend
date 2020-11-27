@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 class App extends Component {
     render() {
         return (
-            <BrowserRouter>
+            <BrowserRouter basename={'http://pera-swarm.ce.pdn.ac.lk/swarm-admin'}>
                 <div>
                     <Main />
                 </div>
