@@ -20,6 +20,12 @@ jobs:
 
             - name: Build the repository
               run: npm run build
+              env:
+                  REACT_APP_MQTT_HOST: ${{ secrets.MQTT_HOST }}
+                  REACT_APP_MQTT_PORT: ${{ secrets.MQTT_PORT }}
+                  REACT_APP_MQTT_PATH: ${{ secrets.MQTT_PATH }}
+                  REACT_APP_MQTT_USER: ${{ secrets.MQTT_USER }}
+                  REACT_APP_MQTT_PASS: ${{ secrets.MQTT_PASS }}
 
             - name: Deploy to gh-pages
               uses: peaceiris/actions-gh-pages@v3

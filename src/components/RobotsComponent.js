@@ -3,6 +3,8 @@ import { Button } from 'reactstrap';
 import Select from 'react-select';
 import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 
+import RobotControl from './robot/ControlComponent';
+
 const options = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
@@ -31,7 +33,7 @@ class Robots extends Component {
                 <div className="row row-header">
                     <div className="col-12">
                         <div className="container striped bordered hover">
-                            <div className="row">
+                            <div className="row  d-flex align-items-center">
                                 <div className="col-1 col-sm-2">Robots</div>
                                 <div className="col-2 col-sm-4">
                                     <Select
@@ -78,18 +80,7 @@ class Robots extends Component {
                                             <Tab.Content>
                                                 <Tab.Pane eventKey="control">
                                                     <h5>Control</h5>
-                                                    <p>
-                                                        At vero eos et accusamus et iusto
-                                                        odio dignissimos ducimus qui
-                                                        blanditiis praesentium voluptatum
-                                                        deleniti atque corrupti quos
-                                                        dolores et quas molestias
-                                                        excepturi sint occaecati
-                                                        cupiditate non provident,
-                                                        similique sunt in culpa qui
-                                                        officia deserunt mollitia animi,
-                                                        id est laborum et dolorum fuga.
-                                                    </p>
+                                                    <RobotControl/>
                                                 </Tab.Pane>
                                                 <Tab.Pane eventKey="localization">
                                                     <h5>Localization</h5>
