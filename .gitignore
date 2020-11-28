@@ -26,3 +26,4 @@ node_modules
 
 development.env
 production.env
+debug.log
