@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/swarm-admin/static/css/main.bfff5196.chunk.css",
-    "main.js": "/swarm-admin/static/js/main.423085e2.chunk.js",
-    "main.js.map": "/swarm-admin/static/js/main.423085e2.chunk.js.map",
-    "runtime-main.js": "/swarm-admin/static/js/runtime-main.8603cd29.js",
-    "runtime-main.js.map": "/swarm-admin/static/js/runtime-main.8603cd29.js.map",
+    "main.js": "/swarm-admin/static/js/main.8c15650d.chunk.js",
+    "main.js.map": "/swarm-admin/static/js/main.8c15650d.chunk.js.map",
+    "runtime-main.js": "/swarm-admin/static/js/runtime-main.3c9d2e88.js",
+    "runtime-main.js.map": "/swarm-admin/static/js/runtime-main.3c9d2e88.js.map",
     "static/css/2.1a02f21c.chunk.css": "/swarm-admin/static/css/2.1a02f21c.chunk.css",
-    "static/js/2.d4e29a29.chunk.js": "/swarm-admin/static/js/2.d4e29a29.chunk.js",
-    "static/js/2.d4e29a29.chunk.js.map": "/swarm-admin/static/js/2.d4e29a29.chunk.js.map",
-    "static/js/3.ba026e59.chunk.js": "/swarm-admin/static/js/3.ba026e59.chunk.js",
-    "static/js/3.ba026e59.chunk.js.map": "/swarm-admin/static/js/3.ba026e59.chunk.js.map",
+    "static/js/2.2a739a8a.chunk.js": "/swarm-admin/static/js/2.2a739a8a.chunk.js",
+    "static/js/2.2a739a8a.chunk.js.map": "/swarm-admin/static/js/2.2a739a8a.chunk.js.map",
+    "static/js/3.ae6903f4.chunk.js": "/swarm-admin/static/js/3.ae6903f4.chunk.js",
+    "static/js/3.ae6903f4.chunk.js.map": "/swarm-admin/static/js/3.ae6903f4.chunk.js.map",
     "index.html": "/swarm-admin/index.html",
     "static/css/2.1a02f21c.chunk.css.map": "/swarm-admin/static/css/2.1a02f21c.chunk.css.map",
     "static/css/main.bfff5196.chunk.css.map": "/swarm-admin/static/css/main.bfff5196.chunk.css.map",
-    "static/js/2.d4e29a29.chunk.js.LICENSE.txt": "/swarm-admin/static/js/2.d4e29a29.chunk.js.LICENSE.txt"
+    "static/js/2.2a739a8a.chunk.js.LICENSE.txt": "/swarm-admin/static/js/2.2a739a8a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.8603cd29.js",
+    "static/js/runtime-main.3c9d2e88.js",
     "static/css/2.1a02f21c.chunk.css",
-    "static/js/2.d4e29a29.chunk.js",
+    "static/js/2.2a739a8a.chunk.js",
     "static/css/main.bfff5196.chunk.css",
-    "static/js/main.423085e2.chunk.js"
+    "static/js/main.8c15650d.chunk.js"
   ]
 }
