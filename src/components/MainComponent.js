@@ -7,6 +7,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Settings from './SettingsComponent';
 import Navigation from './NavComponent';
+import Test from './Test';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 class Main extends Component {
@@ -24,6 +25,8 @@ class Main extends Component {
                     <Redirect to="/home" />
                 </Switch>
                 <br></br>
+
+                <Test />;
                 <Footer />
             </div>
         );
