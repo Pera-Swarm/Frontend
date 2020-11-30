@@ -1,77 +1,61 @@
 import React, { Component } from 'react';
 import mqttConfig from '../config/mqttConfig';
 import MQTT from 'paho-mqtt';
+import * as mqtt from 'react-paho-mqtt';
+
+import { Button } from 'reactstrap';
+
+const TOPIC_INFO = 'v1/localization/info';
+const TOPIC_CREATE = 'v1/gui/create';
+const TOPIC_CHANGE_COLOR = 'v1/sensor/color';
+const _options = {};
 
 class Test extends Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            client : new MQTT.Client(mqttConfig.host, Number(mqttConfig.port), "/socket.io",mqttConfig.options.clientId),
-            userName:'',
-            password:'',
-            reconnect:'',
-            useSSL:'',
-            cleanSession:'',
-            onSuccess:'',
-            onFailure :''
-        }
-        this.connect = this.connect.bind(this);
-    }
-    connect() {
-        this.userName = "swarm_user";
-        this.password = "swarm_usere15";
-        this.reconnect = true;
-        this.useSSL = true;
-        this.cleanSession = false;
-        this.onSuccess = () => {
-            this.client.subscribe("test");
-            console.log('MQTT: connected');
+        super(props)
+        //console.log(mqttConfig);
+        var client = new MQTT.Client(mqttConfig.host, Number(mqttConfig.port), "/socket.io", mqttConfig.options.clientId);
 
-            //onMessageArrived = onMessageArrived;
-            //onConnectionLost = onConnectionLost
-
-        };
-        this.onFailure = () => {
-            console.log('MQTT: connection failed');
-        };
-
+        //if(client.connect !== undefined){
+        client.connect({
+            userName: "swarm_user",
+            password: "swarm_usere15",
+            reconnect: true,
+            useSSL: true,
+            cleanSession: false,
+            onSuccess: () => {
+                client.subscribe("test");
+                console.log('MQTT: connected check');
+                //onMessageArrived = onMessageArrived;
+                //onConnectionLost = onConnectionLost
+            },
+            onFailure: () => {
+                console.log('MQTT: connection failed');
+            },
+        });
+        this.create = this.create.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
-    
+    create(id, x, y, heading, callback) {
+        console.log("create robot");
+    }
+
+    delete() {
+        console.log("delete robot");
+    }
+
+
     render() {
         return (
             <div className="App">
-                {this.connect}
+                <Button variant="primary" onClick={this.create}>Create</Button>
+                <br></br><br></br>
+                <Button variant="primary" onClick={this.delete} >Delete</Button>
+                <br></br><br></br>
             </div>
         );
     }
 }
+
 export default Test;
-
-/*
-
-class Test extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: 'www.javatpoint.com'
-        }
-        this.connect = this.connect.bind(this);
-    }
-    connect() {
-        console.log("check");
-        console.log(this.state.data);
-
-    }
-    render() {
-        return (
-            <div className="App">
-                <h2>React Constructor Example</h2>
-                <input type="text" value={this.state.data} />
-                <button onClick={this.connect}>Please Click</button>
-            </div>
-        );
-    }
-}
-
-*/
