@@ -25,7 +25,6 @@ class Main extends Component {
                 </Switch>
                 <br></br>
 
-
                 <Footer />
             </div>
         );
