@@ -1,7 +1,14 @@
-import React, { Component, useState } from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, InputGroup, InputGroupAddon, InputGroupText, Input, Breadcrumb, BreadcrumbItem, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, CardBody, CardTitle, Button, Input, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-import { Link } from 'react-router-dom';
+import mqttConfig from '../config/mqttConfig';
+import MQTT from 'paho-mqtt';
+
+const TOPIC_INFO = 'v1/localization/info';
+const TOPIC_CREATE = 'v1/gui/create';
+const TOPIC_CHANGE_COLOR = 'v1/sensor/color';
+const _options = {};
+
 const VolumeSlider = () => {
     const [value, setValue] = React.useState(30);
     return (
@@ -32,11 +39,40 @@ class RobotControl extends Component {
                 heading: false
             }
         };
+        var client = new MQTT.Client(mqttConfig.host, Number(mqttConfig.port), "/socket.io", mqttConfig.options.clientId);
+
+        //if(client.connect !== undefined){
+        client.connect({
+            userName: "swarm_user",
+            password: "swarm_usere15",
+            reconnect: true,
+            useSSL: true,
+            cleanSession: false,
+            onSuccess: () => {
+                client.subscribe("test");
+                console.log('MQTT: connected check');
+                //onMessageArrived = onMessageArrived;
+                //onConnectionLost = onConnectionLost
+            },
+            onFailure: () => {
+                console.log('MQTT: connection failed');
+            },
+        });
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.create = this.create.bind(this);
         this.delete = this.delete.bind(this);
+        this.publish = this.publish.bind(this);
     }
+
+    publish(topic, message, callback) {
+        var payload = new MQTT.Message(message);
+        payload.destinationName = topic;
+        console.log('MQTT: published');
+        //client.send(payload);
+        //if (callback != null) callback();
+    }
+
 
     handleInputChange(event) {
         const target = event.target;
@@ -52,8 +88,11 @@ class RobotControl extends Component {
         console.log('create');
         console.log('Current State is: ' + JSON.stringify(this.state));
         alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
-
         event.preventDefault();
+        var topic = TOPIC_CREATE;
+        var message = JSON.stringify(this.state);
+        var callback = "test";
+        this.publish(topic, message, callback)
     }
 
     delete(event) {

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
 import mqttConfig from '../config/mqttConfig';
 import MQTT from 'paho-mqtt';
-import * as mqtt from 'react-paho-mqtt';
-
-import { Button } from 'reactstrap';
 
 const TOPIC_INFO = 'v1/localization/info';
 const TOPIC_CREATE = 'v1/gui/create';
