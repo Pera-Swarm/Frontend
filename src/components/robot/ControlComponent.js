@@ -1,14 +1,11 @@
 import React, { Component, useState } from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
-// This should have mqtt support from  paho-mqtt library
-
+import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, InputGroup, InputGroupAddon, InputGroupText, Input, Breadcrumb, BreadcrumbItem, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-import Test from '../Test';
-
+import { Link } from 'react-router-dom';
 const VolumeSlider = () => {
     const [value, setValue] = React.useState(30);
     return (
-        <RangeSlider style={"width:100%"}
+        <RangeSlider
             value={value}
             onChange={e => setValue(e.target.value)}
             min={-180}
@@ -20,6 +17,68 @@ const VolumeSlider = () => {
 };
 
 class RobotControl extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: '',
+            xCoordinate: '',
+            yCoordinate: '',
+            heading: '',
+            touched: {
+                id: false,
+                xCoordinate: false,
+                yCoordinate: false,
+                heading: false
+            }
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmit(event) {
+        console.log('Current State is: ' + JSON.stringify(this.state));
+        alert('Current State is: ' + JSON.stringify(this.state));
+
+        event.preventDefault();
+    }
+
+    handleBlur = (field) => (evt) => {
+        this.setState({
+            touched: { ...this.state.touched, [field]: true }
+        });
+    }
+
+    validate(id, xCoordinate, yCoordinate, heading) {
+        const errors = {
+            id: '',
+            xCoordinate: '',
+            yCoordinate: '',
+            heading: ''
+        };
+        const reg = /^\d+$/;
+        if (this.state.touched.id && !reg.test(id))
+            errors.id = 'Id should contain only numbers';
+        if (this.state.touched.xCoordinate && !reg.test(xCoordinate))
+            errors.xCoordinate = 'x-Coordinate should contain only numbers';
+        if (this.state.touched.yCoordinate && !reg.test(yCoordinate))
+            errors.yCoordinate = 'y-Coordinate should contain only numbers';
+
+        return errors;
+    }
+
+
     create() {
         console.log('create');
 
@@ -31,6 +90,7 @@ class RobotControl extends Component {
     }
 
     render() {
+        const errors = this.validate(this.state.id, this.state.xCoordinate, this.state.yCoordinate);
         return (
             <div>
                 <p>
@@ -45,77 +105,66 @@ class RobotControl extends Component {
                     officia deserunt mollitia animi,
                     id est laborum et dolorum fuga.
             </p>
-
                 <Card>
                     <CardBody>
                         <CardTitle tag="h5">Control Robots</CardTitle>
-                        <div className="row">
-                            <div className="col-6">
-                                <InputGroup>
-                                    <InputGroupAddon addonType="prepend">
-                                        <InputGroupText >Id </InputGroupText>
-                                    </InputGroupAddon>
-                                    <Input placeholder="id" />
-                                </InputGroup>
-                            </div>
-                            <div className="col-3">
-                                &nbsp;
-                            </div>
-                            <div className="col-3">
-                                <Button onClick={this.create}>Create</Button>
-                            </div>
-                        </div>
-                        <br></br>
-                        <div className="row">
-                            <div className="col-6">
-                                <InputGroup>
-                                    <InputGroupAddon addonType="prepend">
-                                        <InputGroupText>x-coordinates</InputGroupText>
-                                    </InputGroupAddon>
-                                    <Input placeholder="x-coordinates" />
-                                </InputGroup>
-                            </div>
-                            <div className="col-3">
-                                &nbsp;
-                            </div>
-                            <div className="col-3">
-                                <Button onClick={this.delete}>Delete</Button>
-                            </div>
-                        </div>
-                        <br></br>
-                        <div className="row">
-                            <div className="col-6">
-                                <InputGroup>
-                                    <InputGroupAddon addonType="prepend">
-                                        <InputGroupText>y-coordinates</InputGroupText>
-                                    </InputGroupAddon>
-                                    <Input placeholder="y-coordinates" />
-                                </InputGroup>
-                            </div>
-                            <div className="col-3">
-                                &nbsp;
-                            </div>
-                            <div className="col-3">
-                                &nbsp;
-                            </div>
-                        </div>
-                        <br></br>
-                        <div className="row">
-                            <div className="col-6">
-                                <InputGroup>
-                                    <InputGroupAddon addonType="prepend">
-                                        <InputGroupText>Heading</InputGroupText>
-                                    </InputGroupAddon>
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormGroup row>
+                                <Label htmlFor="id" md={3}>Id</Label>
+                                <Col md={3}>
+                                    <Input type="text" id="id" name="id"
+                                        placeholder="Id"
+                                        value={this.state.id}
+                                        valid={errors.id === ''}
+                                        invalid={errors.id !== ''}
+                                        onBlur={this.handleBlur('id')}
+                                        onChange={this.handleInputChange} />
+                                    <FormFeedback>{errors.id}</FormFeedback>
+                                </Col>
+                                <Col md={{ size: 3, offset: 3 }}>
+                                    <Button type="submit" color="primary">
+                                        Create
+                                    </Button>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlFor="xCoordinate" md={3}>x-coordinate</Label>
+                                <Col md={3}>
+                                    <Input type="text" id="xCoordinate" name="xCoordinate"
+                                        placeholder="x-coordinate"
+                                        value={this.state.xCoordinate}
+                                        valid={errors.xCoordinate === ''}
+                                        invalid={errors.xCoordinate !== ''}
+                                        onBlur={this.handleBlur('xCoordinate')}
+                                        onChange={this.handleInputChange} />
+                                    <FormFeedback>{errors.xCoordinate}</FormFeedback>
+                                </Col>
+                                <Col md={{ size: 3, offset: 3 }}>
+                                    <Button type="submit" color="primary">
+                                        Delete
+                                    </Button>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlFor="yCoordinate" md={3}>y-coordinate</Label>
+                                <Col md={3}>
+                                    <Input type="text" id="yCoordinate" name="yCoordinate"
+                                        placeholder="y-coordinate"
+                                        value={this.state.yCoordinate}
+                                        valid={errors.yCoordinate === ''}
+                                        invalid={errors.yCoordinate !== ''}
+                                        onBlur={this.handleBlur('yCoordinate')}
+                                        onChange={this.handleInputChange} />
+                                    <FormFeedback>{errors.yCoordinate}</FormFeedback>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label htmlFor="heading" md={3}>Heading</Label>
+                                <Col md={3}>
                                     <VolumeSlider />
-                                </InputGroup>
-                            </div>
-                            <div className="col-3">
-                                &nbsp;
-                            </div>
-                            <div className="col-3">
-                                &nbsp;
-                            </div>
-                        </div>
+                                </Col>
+                            </FormGroup>
+                        </Form>
                     </CardBody>
                 </Card>
             </div>

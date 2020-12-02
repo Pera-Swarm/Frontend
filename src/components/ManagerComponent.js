@@ -1,6 +1,6 @@
 import React from 'react';
-
 import Test from './Test';
+
 function Manager() {
     return (
         <div className="container">

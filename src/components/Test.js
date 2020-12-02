@@ -33,15 +33,33 @@ class Test extends Component {
                 console.log('MQTT: connection failed');
             },
         });
+
+
+
         this.create = this.create.bind(this);
         this.delete = this.delete.bind(this);
     }
 
-    create(id, x, y, heading, callback) {
-        console.log("create robot");
+    publish(topic, message, callback) {
+        var payload = new MQTT.Message(message);
+        payload.destinationName = topic;
+        this.client.send(payload);
+        console.log('MQTT: published');
+
+        if (callback != null) callback();
     }
 
-    delete() {
+    create(id, x, y, heading, callback) {
+        console.log("create robot");
+        var topic = TOPIC_CREATE;
+        var payload = "Test!";
+        var message = new MQTT.Message(payload);
+        var callback = "Teset";
+        this.publish(topic,message,callback );
+
+    }
+
+    delete(i,j,k,l) {
         console.log("delete robot");
     }
 
@@ -49,7 +67,7 @@ class Test extends Component {
     render() {
         return (
             <div className="App">
-                <Button variant="primary" onClick={this.create}>Create</Button>
+                <Button variant="primary" onClick={this.create} >Create</Button>
                 <br></br><br></br>
                 <Button variant="primary" onClick={this.delete} >Delete</Button>
                 <br></br><br></br>
