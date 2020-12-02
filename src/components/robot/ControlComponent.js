@@ -34,7 +34,8 @@ class RobotControl extends Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.create = this.create.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     handleInputChange(event) {
@@ -47,9 +48,18 @@ class RobotControl extends Component {
         });
     }
 
-    handleSubmit(event) {
+    create(event) {
+        console.log('create');
         console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Current State is: ' + JSON.stringify(this.state));
+        alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
+
+        event.preventDefault();
+    }
+
+    delete(event) {
+        console.log('delete');
+        console.log('Current State is: ' + JSON.stringify(this.state));
+        alert('Delete \nCurrent State is: ' + JSON.stringify(this.state));
 
         event.preventDefault();
     }
@@ -78,17 +88,6 @@ class RobotControl extends Component {
         return errors;
     }
 
-
-    create() {
-        console.log('create');
-
-    }
-
-    delete() {
-        console.log('delete');
-
-    }
-
     render() {
         const errors = this.validate(this.state.id, this.state.xCoordinate, this.state.yCoordinate);
         return (
@@ -108,7 +107,7 @@ class RobotControl extends Component {
                 <Card>
                     <CardBody>
                         <CardTitle tag="h5">Control Robots</CardTitle>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.create}>
                             <FormGroup row>
                                 <Label htmlFor="id" md={3}>Id</Label>
                                 <Col md={3}>
@@ -140,7 +139,7 @@ class RobotControl extends Component {
                                     <FormFeedback>{errors.xCoordinate}</FormFeedback>
                                 </Col>
                                 <Col md={{ size: 3, offset: 3 }}>
-                                    <Button type="submit" color="primary">
+                                    <Button type="button" onClick={this.delete} color="primary">
                                         Delete
                                     </Button>
                                 </Col>
