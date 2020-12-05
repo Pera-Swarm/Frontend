@@ -80,7 +80,7 @@ class Robots extends Component {
                                             <Tab.Content>
                                                 <Tab.Pane eventKey="control">
                                                     <h5>Control</h5>
-                                                    <RobotControl/>
+                                                    <RobotControl />
                                                 </Tab.Pane>
                                                 <Tab.Pane eventKey="localization">
                                                     <h5>Localization</h5>
