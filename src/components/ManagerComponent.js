@@ -1,4 +1,5 @@
 import React from 'react';
+import Test from './Test';
 
 function Manager() {
     return (
@@ -9,7 +10,7 @@ function Manager() {
                     <div className="col-12">
                         <h1>Manager</h1>
                         <p>
-                            <br></br>
+                            <Test />
                             <br></br>
                             <br></br>
                             <br></br>

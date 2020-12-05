@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
 import Select from 'react-select';
 import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 
-import RobotControl from './robot/ControlComponent';
+import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 
+import RobotControl from './robot/ControlComponent';
 const options = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
