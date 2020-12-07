@@ -24,6 +24,7 @@ class Main extends Component {
                     <Redirect to="/home" />
                 </Switch>
                 <br></br>
+
                 <Footer />
             </div>
         );

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
 import Select from 'react-select';
 import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 
-import RobotControl from './robot/ControlComponent';
+import { Button } from 'reactstrap';
 
+import RobotControl from './robot/ControlComponent';
 const options = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
@@ -80,7 +80,7 @@ class Robots extends Component {
                                             <Tab.Content>
                                                 <Tab.Pane eventKey="control">
                                                     <h5>Control</h5>
-                                                    <RobotControl/>
+                                                    <RobotControl />
                                                 </Tab.Pane>
                                                 <Tab.Pane eventKey="localization">
                                                     <h5>Localization</h5>
