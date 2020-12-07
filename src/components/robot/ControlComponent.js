@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button, Input, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
 
+import MQTTClient from './MQTTClientComponent';
+
 const TOPIC_CREATE = 'v1/gui/create';
 
 const VolumeSlider = () => {
@@ -14,7 +16,7 @@ const VolumeSlider = () => {
             max={180}
             size={'lg'}
             step={0.5}
-        />
+            />
     );
 };
 
@@ -39,12 +41,14 @@ class RobotControl extends Component {
         this.create = this.create.bind(this);
         this.delete = this.delete.bind(this);
         this.publish = this.publish.bind(this);
+
     }
 
     publish(topic, message, callback) {
         console.log('MQTT: published');
         //client.send(payload);
-        //if (callback != null) callback();
+
+        // Should pass the topic and message into MQTTClient component
     }
 
 
@@ -66,6 +70,7 @@ class RobotControl extends Component {
         var topic = TOPIC_CREATE;
         var message = JSON.stringify(this.state);
         var callback = "test";
+
         this.publish(topic, message, callback)
     }
 
@@ -92,11 +97,11 @@ class RobotControl extends Component {
         };
         const reg = /^\d+$/;
         if (this.state.touched.id && !reg.test(id))
-            errors.id = 'Id should contain only numbers';
+        errors.id = 'Id should contain only numbers';
         if (this.state.touched.xCoordinate && !reg.test(xCoordinate))
-            errors.xCoordinate = 'x-Coordinate should contain only numbers';
+        errors.xCoordinate = 'x-Coordinate should contain only numbers';
         if (this.state.touched.yCoordinate && !reg.test(yCoordinate))
-            errors.yCoordinate = 'y-Coordinate should contain only numbers';
+        errors.yCoordinate = 'y-Coordinate should contain only numbers';
 
         return errors;
     }
@@ -105,6 +110,8 @@ class RobotControl extends Component {
         const errors = this.validate(this.state.id, this.state.xCoordinate, this.state.yCoordinate);
         return (
             <div>
+                <MQTTClient/>
+
                 <p>
                     At vero eos et accusamus et iusto
                     odio dignissimos ducimus qui
@@ -116,7 +123,7 @@ class RobotControl extends Component {
                     similique sunt in culpa qui
                     officia deserunt mollitia animi,
                     id est laborum et dolorum fuga.
-            </p>
+                </p>
                 <Card>
                     <CardBody>
                         <CardTitle tag="h5">Control Robots</CardTitle>
