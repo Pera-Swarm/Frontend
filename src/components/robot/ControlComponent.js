@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button, Input, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
+import MQTTClient from './MQTTClientComponent';
 
 const TOPIC_CREATE = 'v1/gui/create';
 
