@@ -15,31 +15,35 @@ class MQTTClient extends Component {
         };
     }
 
+    componentWillUnmount() {
+        console.log('MQTT:disconnect');
+        this.client.disconnect()
+    }
+
     componentDidMount() {
-        console.log('Mounted');
-
-        console.log(mqttConfig);
-
         this.client = new MQTT.Client(
-            'swarm-gui.tk',
+            mqttConfig.host,
             Number(mqttConfig.port),
-            '/socket.io',
+            mqttConfig.path,
             mqttConfig.options.clientId
         );
 
-        // console.log(this.client);
-
         this.client.connect({
-            userName: 'swarm_user',
-            password: 'swarm_usere15',
+            userName: mqttConfig.options.username ||'swarm_user',
+            password: mqttConfig.options.password ||'swarm_usere15',
             reconnect: true,
             useSSL: true,
             cleanSession: false,
+
             onSuccess: () => {
+                console.log('MQTT:connected');
+
+                // Default subscription
                 this.client.subscribe(TOPIC_INFO);
-                console.log('MQTT: connected');
+
                 this.client.onMessageArrived = this.onMessageArrived;
                 this.client.onConnectionLost = this.onConnectionLost;
+
             },
             onFailure: () => {
                 console.log('MQTT: connection failed');
@@ -62,16 +66,9 @@ class MQTTClient extends Component {
             console.log('MQTT: ' + topic + ' > ' + msg);
             try {
                 const createData = JSON.parse(msg);
-                // Robot create logic
-                // Can create Robots or VRobots
-                this.setState(
-                    {
-                        robots: createData
-                    },
-                    () => {
-                        console.log(this.state);
-                    }
-                );
+                this.setState({robots: createData},() => {
+                    console.log(this.state);
+                });
 
             } catch (e) {
                 console.error(e);
@@ -87,46 +84,30 @@ class MQTTClient extends Component {
                         return item;
                     }
                 });
-                this.setState(
-                    {
-                        robots: nextRobots
-                    },
-                    () => {
-                        console.log(this.state);
-                    }
-                );
+                this.setState({robots: nextRobots},() => {
+                    console.log(this.state);
+                });
             } catch (e) {
                 console.error(e);
             }
+
         } else if (topic === TOPIC_INFO) {
             //console.log('MQTT: ' + topic + ' > ' + msg);
             try {
                 // Robots bulk or individual location update logic
                 const locInfoData = JSON.parse(msg);
-                this.setState(
-                    {
-                        robots: locInfoData
-                    },
-                    () => {
-                        console.log(this.state);
-                    }
-                );
+                this.setState({robots: locInfoData},() => {
+                    console.log(this.state);
+                });
             } catch (e) {
                 console.error(e);
             }
+            
         }
     };
 
     render() {
-        return (
-            <div className="App">
-                <Button variant="primary" >Create</Button>
-                <br></br><br></br>
-                <Button variant="primary">Delete</Button>
-                <br></br><br></br>
-            </div>
-
-        );
+        return '';
     }
 }
 export default MQTTClient;
