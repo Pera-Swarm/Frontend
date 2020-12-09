@@ -9,7 +9,6 @@ function Manager() {
                 <div className="row row-header">
                     <div className="col-12">
                         <h1>Manager</h1>
-                        <p>
                             <MQTTClient />
                             <br></br>
                             <br></br>
@@ -24,7 +23,6 @@ function Manager() {
                             <br></br>
                             <br></br>
                             <br></br>
-                        </p>
                     </div>
                 </div>
             </div>
