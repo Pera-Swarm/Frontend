@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button, Input, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-
 import MQTTClient from './MQTTClientComponent';
 
-const TOPIC_CREATE = 'v1/gui/create';
+import { TOPIC_INFO, TOPIC_CREATE, TOPIC_DELETE } from '../../config/topics';
+
+const client = MQTTClient.client;
 
 const VolumeSlider = () => {
     const [value, setValue] = React.useState(30);
@@ -45,6 +46,7 @@ class RobotControl extends Component {
     }
 
     publish(topic, message, callback) {
+        client.publish(topic,message,0,false);
         console.log('MQTT: published');
         //client.send(payload);
 
@@ -68,10 +70,10 @@ class RobotControl extends Component {
         alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
         event.preventDefault();
         var topic = TOPIC_CREATE;
+        client.subscribe(topic);
         var message = JSON.stringify(this.state);
-        var callback = "test";
-
-        this.publish(topic, message, callback)
+        var callback = "";
+        client.publish(topic,message,0,false);
     }
 
     delete(event) {
