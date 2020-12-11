@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button, Input, Form, FormGroup, Label, Col, FormFeedback } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-import MQTT from 'paho-mqtt';
-// import { Robot, VRobot } from 'pera-swarm;
+import MQTTClient from './MQTTClientComponent';
 
-import mqttConfig from '../../config/mqttConfig';
 import { TOPIC_INFO, TOPIC_CREATE, TOPIC_DELETE } from '../../config/topics';
+
+const client = MQTTClient.client;
 
 const VolumeSlider = () => {
     const [value, setValue] = React.useState(30);
@@ -17,7 +17,7 @@ const VolumeSlider = () => {
             max={180}
             size={'lg'}
             step={0.5}
-        />
+            />
     );
 };
 
@@ -26,7 +26,6 @@ class RobotControl extends Component {
         super(props);
 
         this.state = {
-            robots: [],
             id: '',
             xCoordinate: '',
             yCoordinate: '',
@@ -38,117 +37,20 @@ class RobotControl extends Component {
                 heading: false
             }
         };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.create = this.create.bind(this);
+        this.delete = this.delete.bind(this);
+        this.publish = this.publish.bind(this);
+
     }
-
-    componentDidMount() {
-        console.log('Mounted');
-
-        console.log(mqttConfig);
-
-        this.client = new MQTT.Client(
-            'swarm-gui.tk',
-            Number(mqttConfig.port),
-            '/socket.io',
-            mqttConfig.options.clientId
-        );
-
-        // console.log(this.client);
-
-        this.client.connect({
-            userName: 'swarm_user',
-            password: 'swarm_usere15',
-            reconnect: true,
-            useSSL: true,
-            cleanSession: false,
-            onSuccess: () => {
-                this.client.subscribe(TOPIC_INFO);
-                console.log('MQTT: connected');
-                this.client.onMessageArrived = this.onMessageArrived;
-                this.client.onConnectionLost = this.onConnectionLost;
-            },
-            onFailure: () => {
-                console.log('MQTT: connection failed');
-            }
-        });
-    }
-
-    onConnectionLost = (responseObject) => {
-        if (responseObject.errorCode !== 0) {
-            console.log('MQTT: onConnectionLost:' + responseObject.errorMessage);
-            console.log('MQTT: reconnecting');
-        }
-    };
-
-    onMessageArrived = (packet) => {
-        const msg = packet.payloadString.trim();
-        const topic = packet.destinationName;
-
-        if (topic === TOPIC_CREATE) {
-            console.log('MQTT: ' + topic + ' > ' + msg);
-            try {
-                const createData = JSON.parse(msg);
-                // Robot create logic
-                // Can create Robots or VRobots
-                this.setState(
-                    {
-                        robots: createData
-                    },
-                    () => {
-                        console.log(this.state);
-                    }
-                );
-
-            } catch (e) {
-                console.error(e);
-            }
-        } else if (topic === TOPIC_DELETE) {
-            try {
-                // Robot delete logic
-                // Can delete Robots or VRobots
-                const deleteData = JSON.parse(msg);
-                const { robots: prevRobots } = this.state;
-                const nextRobots = prevRobots.forEach((item) => {
-                    if (item.id !== deleteData.id) {
-                        return item;
-                    }
-                });
-                this.setState(
-                    {
-                        robots: nextRobots
-                    },
-                    () => {
-                        console.log(this.state);
-                    }
-                );
-            } catch (e) {
-                console.error(e);
-            }
-        } else if (topic === TOPIC_INFO) {
-            //console.log('MQTT: ' + topic + ' > ' + msg);
-            try {
-                // Robots bulk or individual location update logic
-                const locInfoData = JSON.parse(msg);
-                this.setState(
-                    {
-                        robots: locInfoData
-                    },
-                    () => {
-                        console.log(this.state);
-                    }
-                );
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    };
-
 
     publish(topic, message, callback) {
-        var payload = new MQTT.Message(message);
-        payload.destinationName = topic;
+        client.publish(topic,message,0,false);
         console.log('MQTT: published');
         //client.send(payload);
-        //if (callback != null) callback();
+
+        // Should pass the topic and message into MQTTClient component
     }
 
 
@@ -168,20 +70,18 @@ class RobotControl extends Component {
         alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
         event.preventDefault();
         var topic = TOPIC_CREATE;
+        client.subscribe(topic);
         var message = JSON.stringify(this.state);
-        var callback = "test";
-        this.publish(topic, message, callback)
+        var callback = "";
+        client.publish(topic,message,0,false);
     }
 
     delete(event) {
         console.log('delete');
         console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
+        alert('Delete \nCurrent State is: ' + JSON.stringify(this.state));
+
         event.preventDefault();
-        var topic = TOPIC_DELETE;
-        var message = JSON.stringify(this.state);
-        var callback = "test";
-        this.publish(topic, message, callback)
     }
 
     handleBlur = (field) => (evt) => {
@@ -199,11 +99,11 @@ class RobotControl extends Component {
         };
         const reg = /^\d+$/;
         if (this.state.touched.id && !reg.test(id))
-            errors.id = 'Id should contain only numbers';
+        errors.id = 'Id should contain only numbers';
         if (this.state.touched.xCoordinate && !reg.test(xCoordinate))
-            errors.xCoordinate = 'x-Coordinate should contain only numbers';
+        errors.xCoordinate = 'x-Coordinate should contain only numbers';
         if (this.state.touched.yCoordinate && !reg.test(yCoordinate))
-            errors.yCoordinate = 'y-Coordinate should contain only numbers';
+        errors.yCoordinate = 'y-Coordinate should contain only numbers';
 
         return errors;
     }
@@ -212,6 +112,8 @@ class RobotControl extends Component {
         const errors = this.validate(this.state.id, this.state.xCoordinate, this.state.yCoordinate);
         return (
             <div>
+                <MQTTClient/>
+
                 <p>
                     At vero eos et accusamus et iusto
                     odio dignissimos ducimus qui
@@ -223,7 +125,7 @@ class RobotControl extends Component {
                     similique sunt in culpa qui
                     officia deserunt mollitia animi,
                     id est laborum et dolorum fuga.
-            </p>
+                </p>
                 <Card>
                     <CardBody>
                         <CardTitle tag="h5">Control Robots</CardTitle>
