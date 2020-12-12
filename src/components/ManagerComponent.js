@@ -1,5 +1,4 @@
 import React from 'react';
-import MQTTClient from './robot/MQTTClientComponent';
 
 function Manager() {
     return (
@@ -9,20 +8,19 @@ function Manager() {
                 <div className="row row-header">
                     <div className="col-12">
                         <h1>Manager</h1>
-                            <MQTTClient />
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
                     </div>
                 </div>
             </div>
