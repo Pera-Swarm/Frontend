@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/swarm-admin/static/css/main.bfff5196.chunk.css",
-    "main.js": "/swarm-admin/static/js/main.38657218.chunk.js",
-    "main.js.map": "/swarm-admin/static/js/main.38657218.chunk.js.map",
-    "runtime-main.js": "/swarm-admin/static/js/runtime-main.3c9d2e88.js",
-    "runtime-main.js.map": "/swarm-admin/static/js/runtime-main.3c9d2e88.js.map",
+    "main.css": "/swarm-admin/static/css/main.f2b70d70.chunk.css",
+    "main.js": "/swarm-admin/static/js/main.632af03f.chunk.js",
+    "main.js.map": "/swarm-admin/static/js/main.632af03f.chunk.js.map",
+    "runtime-main.js": "/swarm-admin/static/js/runtime-main.666a9425.js",
+    "runtime-main.js.map": "/swarm-admin/static/js/runtime-main.666a9425.js.map",
     "static/css/2.1a02f21c.chunk.css": "/swarm-admin/static/css/2.1a02f21c.chunk.css",
-    "static/js/2.05c90603.chunk.js": "/swarm-admin/static/js/2.05c90603.chunk.js",
-    "static/js/2.05c90603.chunk.js.map": "/swarm-admin/static/js/2.05c90603.chunk.js.map",
-    "static/js/3.ae6903f4.chunk.js": "/swarm-admin/static/js/3.ae6903f4.chunk.js",
-    "static/js/3.ae6903f4.chunk.js.map": "/swarm-admin/static/js/3.ae6903f4.chunk.js.map",
+    "static/js/2.0d62f7e4.chunk.js": "/swarm-admin/static/js/2.0d62f7e4.chunk.js",
+    "static/js/2.0d62f7e4.chunk.js.map": "/swarm-admin/static/js/2.0d62f7e4.chunk.js.map",
+    "static/js/3.66e6fa4d.chunk.js": "/swarm-admin/static/js/3.66e6fa4d.chunk.js",
+    "static/js/3.66e6fa4d.chunk.js.map": "/swarm-admin/static/js/3.66e6fa4d.chunk.js.map",
     "index.html": "/swarm-admin/index.html",
     "static/css/2.1a02f21c.chunk.css.map": "/swarm-admin/static/css/2.1a02f21c.chunk.css.map",
-    "static/css/main.bfff5196.chunk.css.map": "/swarm-admin/static/css/main.bfff5196.chunk.css.map",
-    "static/js/2.05c90603.chunk.js.LICENSE.txt": "/swarm-admin/static/js/2.05c90603.chunk.js.LICENSE.txt"
+    "static/css/main.f2b70d70.chunk.css.map": "/swarm-admin/static/css/main.f2b70d70.chunk.css.map",
+    "static/js/2.0d62f7e4.chunk.js.LICENSE.txt": "/swarm-admin/static/js/2.0d62f7e4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.3c9d2e88.js",
+    "static/js/runtime-main.666a9425.js",
     "static/css/2.1a02f21c.chunk.css",
-    "static/js/2.05c90603.chunk.js",
-    "static/css/main.bfff5196.chunk.css",
-    "static/js/main.38657218.chunk.js"
+    "static/js/2.0d62f7e4.chunk.js",
+    "static/css/main.f2b70d70.chunk.css",
+    "static/js/main.632af03f.chunk.js"
   ]
 }
