@@ -18,13 +18,17 @@ import { TOPIC_INFO, TOPIC_CREATE, TOPIC_DELETE } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 
 // const client = MQTTClient.client;
-
+var sliderValue = 30;
 const VolumeSlider = () => {
-    const [value, setValue] = React.useState(30);
+    const [value, setValue] = React.useState(sliderValue);
     return (
         <RangeSlider
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+                setValue(e.target.value);
+                sliderValue = e.target.value;
+            }
+            }
             min={-180}
             max={180}
             size={'lg'}
@@ -46,7 +50,7 @@ class RobotControl extends PureComponent {
                 id: false,
                 xCoordinate: false,
                 yCoordinate: false,
-                heading: false
+                heading: sliderValue,
             }
         };
         this.client = bindConnection();
@@ -86,18 +90,26 @@ class RobotControl extends PureComponent {
 
     create(event) {
         console.log('create');
-        console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
+        var dataid = ("id:" + JSON.stringify(this.state.id));
+        var datax = ("x:" + JSON.stringify(this.state.xCoordinate));
+        var datay = ("y:" + JSON.stringify(this.state.yCoordinate));
+        var dataheading = ("heading:" + sliderValue);
+        var message = (dataid + " " + datax + " " + datay + " " + dataheading);
+        alert(message);
+        console.log(message);
         event.preventDefault();
         this.client.subscribe(TOPIC_CREATE);
-        var message = JSON.stringify(this.state);
         this.client.publish(TOPIC_CREATE, message);
     }
 
     delete(event) {
         console.log('delete');
-        console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Delete \nCurrent State is: ' + JSON.stringify(this.state));
+        var dataid = ("id:" + JSON.stringify(this.state.id));
+        var datax = ("x:" + JSON.stringify(this.state.xCoordinate));
+        var datay = ("y:" + JSON.stringify(this.state.yCoordinate));
+        var message = (dataid + " " + datax + " " + datay);
+        alert(message);
+        console.log(message);
         event.preventDefault();
         this.client.subscribe(TOPIC_DELETE);
         var message = JSON.stringify(this.state);
@@ -110,12 +122,11 @@ class RobotControl extends PureComponent {
         });
     };
 
-    validate(id, xCoordinate, yCoordinate, heading) {
+    validate(id, xCoordinate, yCoordinate) {
         const errors = {
             id: '',
             xCoordinate: '',
-            yCoordinate: '',
-            heading: ''
+            yCoordinate: ''
         };
         const reg = /^\d+$/;
         if (this.state.touched.id && !reg.test(id))
