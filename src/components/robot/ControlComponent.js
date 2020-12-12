@@ -27,8 +27,7 @@ const VolumeSlider = () => {
             onChange={(e) => {
                 setValue(e.target.value);
                 sliderValue = e.target.value;
-            }
-            }
+            }}
             min={-180}
             max={180}
             size={'lg'}
@@ -50,7 +49,7 @@ class RobotControl extends PureComponent {
                 id: false,
                 xCoordinate: false,
                 yCoordinate: false,
-                heading: sliderValue,
+                heading: sliderValue
             }
         };
         this.client = bindConnection();
@@ -88,14 +87,22 @@ class RobotControl extends PureComponent {
         });
     }
 
+    update(event) {
+        // TODO: invoke on update of text boxes or slider
+        // Publish to v1/localization/info
+        // Refer: https://docs.google.com/document/d/1mIJ9Q3BRfUMJ_ha4tbEqxWrE7v2qyNZcc4lWoRNcr6s/edit
+        // Please check the functionality before Pull Request
+    }
+
     create(event) {
         console.log('create');
-        var dataid = ("id:" + JSON.stringify(this.state.id));
-        var datax = ("x:" + JSON.stringify(this.state.xCoordinate));
-        var datay = ("y:" + JSON.stringify(this.state.yCoordinate));
-        var dataheading = ("heading:" + sliderValue);
-        var message = (dataid + " " + datax + " " + datay + " " + dataheading);
-        alert(message);
+        var message = JSON.stringify({
+            id: this.state.id,
+            x: this.state.xCoordinate,
+            y: this.state.yCoordinate,
+            heading: sliderValue
+        });
+        //alert(message);
         console.log(message);
         event.preventDefault();
         this.client.subscribe(TOPIC_CREATE);
@@ -104,16 +111,10 @@ class RobotControl extends PureComponent {
 
     delete(event) {
         console.log('delete');
-        var dataid = ("id:" + JSON.stringify(this.state.id));
-        var datax = ("x:" + JSON.stringify(this.state.xCoordinate));
-        var datay = ("y:" + JSON.stringify(this.state.yCoordinate));
-        var dataheading = ("heading:" + sliderValue);
-        var message = (dataid + " " + datax + " " + datay + " " + dataheading);
-        alert(message);
+        var message = JSON.stringify({ id: this.state.id });
         console.log(message);
         event.preventDefault();
         this.client.subscribe(TOPIC_DELETE);
-        var message = JSON.stringify(this.state);
         this.client.publish(TOPIC_DELETE, message);
     }
 
@@ -165,7 +166,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="text"
+                                        type="number"
                                         id="id"
                                         name="id"
                                         placeholder="Id"
@@ -189,7 +190,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="text"
+                                        type="number"
                                         id="xCoordinate"
                                         name="xCoordinate"
                                         placeholder="x-coordinate"
@@ -217,7 +218,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="text"
+                                        type="numberr"
                                         id="yCoordinate"
                                         name="yCoordinate"
                                         placeholder="y-coordinate"
