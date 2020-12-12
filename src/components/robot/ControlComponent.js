@@ -107,7 +107,8 @@ class RobotControl extends PureComponent {
         var dataid = ("id:" + JSON.stringify(this.state.id));
         var datax = ("x:" + JSON.stringify(this.state.xCoordinate));
         var datay = ("y:" + JSON.stringify(this.state.yCoordinate));
-        var message = (dataid + " " + datax + " " + datay);
+        var dataheading = ("heading:" + sliderValue);
+        var message = (dataid + " " + datax + " " + datay + " " + dataheading);
         alert(message);
         console.log(message);
         event.preventDefault();
