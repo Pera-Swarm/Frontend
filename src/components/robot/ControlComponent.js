@@ -94,7 +94,6 @@ class RobotControl extends PureComponent {
     }
 
     update(event) {
-        // Refer: https://docs.google.com/document/d/1mIJ9Q3BRfUMJ_ha4tbEqxWrE7v2qyNZcc4lWoRNcr6s/edit
         console.log('update');
         var message = JSON.stringify({
             id: this.state.id,
@@ -105,8 +104,8 @@ class RobotControl extends PureComponent {
         //alert(message);
         console.log(message);
         event.preventDefault();
-        this.client.subscribe(TOPIC_CREATE);
-        this.client.publish(TOPIC_CREATE, message);
+        this.client.subscribe(TOPIC_INFO);
+        this.client.publish(TOPIC_INFO, message);
     }
 
     create(event) {
