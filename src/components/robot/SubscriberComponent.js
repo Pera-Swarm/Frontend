@@ -65,43 +65,53 @@ class MQTTBox extends PureComponent {
         return (
             <div>
                 <Card style={{ borderColor: '#E0A800' }}>
-                    <CardBody>
-                        <CardTitle tag="h5">Subscriber
-                        <Button close onClick={this.props.deletesub}/>
+                    <CardBody style={{ paddingBottom: "0px", paddingTop: "0px", margin: "0px" }}>
+                        <CardTitle tag="h5" style={{paddingTop: "5px", margin: "0px" }}>Subscriber
+                        <Button close onClick={this.props.deletesub} />
                         </CardTitle>
                         <Form onSubmit={this.subscriber}>
                             <FormGroup row>
-                                <Label htmlFor="sub_topic" md={3}>
-                                    Topic
+                                <div className="col-2">
+                                    <Label htmlFor="sub_topic">
+                                        Topic
                                     </Label>
+                                </div>
+                                <div className="col-1">
+                                </div>
+                                <div className="col-9">
+                                    <Input type="textarea" id="sub_topic" name="sub_topic" rows="1" value={this.state.sub_topic} onChange={this.handleInputChange}>
+                                    </Input>
+                                </div>
                             </FormGroup>
                             <FormGroup row>
-                                <Input type="textarea" id="sub_topic" name="sub_topic" rows="2" value={this.state.sub_topic} onChange={this.handleInputChange}>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label htmlFor="sub_messagebox" md={3}>
-                                    Message
+                                <div className="col-2">
+                                    <Label htmlFor="sub_messagebox">
+                                        Message
                                     </Label>
+                                </div>
+                                <div className="col-1">&nbsp;</div>
+                                <div className="col-9">
+                                    <Input type="textarea" id="sub_messagebox" name="sub_messagebox" rows="1" value={this.state.sub_messagebox} onChange={this.handleInputChange}>
+                                    </Input>
+                                </div>
                             </FormGroup>
                             <FormGroup row>
-                                <Input type="textarea" id="sub_messagebox" name="sub_messagebox" rows="2" value={this.state.sub_messagebox} onChange={this.handleInputChange}>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Button
-                                    type="button"
-                                    onClick={this.subscriber}
-                                    color="warning"
-                                    align="right"
-                                >
-                                    Subscribe
+                                <div className="col-8">&nbsp;</div>
+                                <div className="col-3">
+                                    <Button
+                                        type="button"
+                                        onClick={this.subscriber}
+                                        color="warning"
+                                        align="right"
+                                    >
+                                        Subscribe
                                     </Button>
+                                </div>
+
                             </FormGroup>
                         </Form>
                     </CardBody>
                 </Card>
-                <br></br>
             </div>
         );
     }

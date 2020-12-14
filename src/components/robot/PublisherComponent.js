@@ -68,43 +68,52 @@ class Publisher extends PureComponent {
         return (
             <div>
                 <Card style={{ borderColor: "#218838" }}>
-                    <CardBody>
-                        <CardTitle tag="h5">Publisher
+                    <CardBody style={{ paddingBottom: "0px", paddingTop: "0px", margin: "0px" }}>
+                        <CardTitle tag="h5" style={{ paddingTop: "5px", margin: "0px" }}>Publisher
                         <Button close onClick={this.props.deletepub} />
                         </CardTitle>
                         <Form onSubmit={this.publisher}>
                             <FormGroup row>
-                                <Label htmlFor="pub_topic" md={3}>
-                                    Topic
+                                <div className="col-2">
+                                    <Label htmlFor="pub_topic">
+                                        Topic
                                     </Label>
+                                </div>
+                                <div className="col-1">
+                                </div>
+                                <div className="col-9">
+                                    <Input type="textarea" id="pub_topic" name="pub_topic" rows="1" value={this.state.pub_topic} onChange={this.handleInputChange}>
+                                    </Input>
+                                </div>
                             </FormGroup>
                             <FormGroup row>
-                                <Input type="textarea" id="pub_topic" name="pub_topic" rows="2" value={this.state.pub_topic} onChange={this.handleInputChange}>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label htmlFor="pub_messagebox" md={3}>
-                                    Message
+                                <div className="col-2">
+                                    <Label htmlFor="pub_messagebox">
+                                        Message
                                     </Label>
+                                </div>
+                                <div className="col-1">&nbsp;</div>
+                                <div className="col-9">
+                                    <Input type="textarea" id="pub_messagebox" name="pub_messagebox" rows="1" value={this.state.pub_messagebox} onChange={this.handleInputChange}>
+                                    </Input>
+                                </div>
                             </FormGroup>
                             <FormGroup row>
-                                <Input type="textarea" id="pub_messagebox" name="pub_messagebox" rows="2" value={this.state.pub_messagebox} onChange={this.handleInputChange}>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Button
-                                    type="button"
-                                    onClick={this.publisher}
-                                    color="success"
-                                    align="right"
-                                >
-                                    Publish
+                                <div className="col-8">&nbsp;</div>
+                                <div className="col-3">
+                                    <Button
+                                        type="button"
+                                        onClick={this.publisher}
+                                        color="success"
+                                        align="right"
+                                    >
+                                        Publish
                                     </Button>
+                                </div>
                             </FormGroup>
                         </Form>
                     </CardBody>
                 </Card>
-                <br></br>
             </div>
         );
     }
