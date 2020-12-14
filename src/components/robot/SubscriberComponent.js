@@ -67,7 +67,7 @@ class MQTTBox extends PureComponent {
                 <Card style={{ borderColor: '#E0A800' }}>
                     <CardBody>
                         <CardTitle tag="h5">Subscriber
-                        <Button close />
+                        <Button close onClick={this.props.deletesub}/>
                         </CardTitle>
                         <Form onSubmit={this.subscriber}>
                             <FormGroup row>

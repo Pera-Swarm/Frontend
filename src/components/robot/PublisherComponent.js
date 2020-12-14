@@ -70,7 +70,7 @@ class Publisher extends PureComponent {
                 <Card style={{ borderColor: "#218838" }}>
                     <CardBody>
                         <CardTitle tag="h5">Publisher
-                        <Button close />
+                        <Button close onClick={this.props.deletepub} />
                         </CardTitle>
                         <Form onSubmit={this.publisher}>
                             <FormGroup row>
