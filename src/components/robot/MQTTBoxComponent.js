@@ -8,7 +8,6 @@ import { TOPIC_INFO } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 import Publisher from './PublisherComponent';
 import Subscriber from './SubscriberComponent';
-import Parent from './parent';
 
 class MQTTBox extends PureComponent {
     constructor(props) {
