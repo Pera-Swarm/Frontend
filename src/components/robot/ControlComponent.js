@@ -44,10 +44,6 @@ class RobotControl extends PureComponent {
             xCoordinate: '',
             yCoordinate: '',
             heading: '',
-            pub_topic: '',
-            pub_messagebox: '',
-            sub_topic: '',
-            sub_messagebox: '',
             touched: {
                 id: false,
                 xCoordinate: false,
@@ -60,8 +56,6 @@ class RobotControl extends PureComponent {
         this.create = this.create.bind(this);
         this.delete = this.delete.bind(this);
         this.update = this.update.bind(this);
-        this.publisher = this.publisher.bind(this);
-        this.subscriber = this.subscriber.bind(this);
     }
 
     componentDidMount() {
@@ -131,21 +125,6 @@ class RobotControl extends PureComponent {
         this.client.subscribe(TOPIC_DELETE);
         this.client.publish(TOPIC_DELETE, message);
     }
-
-
-    publisher(event) {
-        console.log('publish');
-        event.preventDefault();
-        this.client.publish(this.state.pub_topic, this.state.pub_messagebox);
-    }
-
-
-    subscriber(event) {
-        console.log('subscribe');
-        event.preventDefault();
-        this.client.subscribe(this.state.sub_topic);
-    }
-
 
     handleBlur = (field) => (evt) => {
         this.setState({
