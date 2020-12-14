@@ -113,8 +113,8 @@ class RobotControl extends PureComponent {
         //alert(message);
         console.log(message);
         event.preventDefault();
-        this.client.subscribe(TOPIC_INFO);
-        this.client.publish(TOPIC_INFO, message);
+        this.client.subscribe(TOPIC_CREATE);
+        this.client.publish(TOPIC_CREATE, message);
     }
 
     delete(event) {
