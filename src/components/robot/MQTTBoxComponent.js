@@ -1,33 +1,46 @@
 import React, { PureComponent } from 'react';
 import {
-    Card,
-    CardBody,
-    CardTitle,
     Button,
-    Input,
-    Form,
-    FormGroup,
-    Label,
     Col,
     Row
 } from 'reactstrap';
 import { TOPIC_INFO } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
+import Publisher from './PublisherComponent';
+import Subscriber from './SubscriberComponent';
+
+const AddPublisher  = () => {
+    return <Publisher />
+}
+
+const Addsubscriber  = () => {
+    return <Subscriber />
+}
 
 class MQTTBox extends PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            pub_topic: '',
-            pub_messagebox: '',
-            sub_topic: '',
-            sub_messagebox: ''
-        };
+            publishers: [],
+            subscribers:[]
+        }
+
+        this.addpub = () => {
+            this.setState({
+                publishers: [...this.state.publishers, <AddPublisher />]
+            })
+        }
+
+        this.addsub = () => {
+            this.setState({
+                subscribers: [...this.state.subscribers, <Addsubscriber />]
+            })
+        }
+
         this.client = bindConnection();
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.publisher = this.publisher.bind(this);
-        this.subscriber = this.subscriber.bind(this);
+        this.addpublisher = this.addpublisher.bind(this);
+        this.addubscriber = this.addsubscriber.bind(this);
     }
 
     componentDidMount() {
@@ -49,30 +62,12 @@ class MQTTBox extends PureComponent {
         this.client.disconnect();
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        this.setState({
-            [name]: value
-        });
+    addpublisher(event) {
+        console.log('pub');
     }
 
-    publisher(event) {
-        console.log('publish');
-        event.preventDefault();
-        this.client.publish(this.state.pub_topic, this.state.pub_messagebox);
-        if (this.state.sub_topic === this.state.pub_topic) {
-            document.getElementById("sub_messagebox").innerHTML = this.state.pub_messagebox;
-        }
-    }
-
-    subscriber(event) {
-        console.log('subscribe');
-        event.preventDefault();
-        this.client.subscribe(this.state.sub_topic);
-
+    addsubscriber(event) {
+        console.log('sub');
     }
 
     render() {
@@ -85,87 +80,25 @@ class MQTTBox extends PureComponent {
                     similique sunt in culpa qui officia deserunt mollitia animi, id est
                     laborum et dolorum fuga.
                 </p>
-
+                <Button type="button" color="success" align="right" id="addpub" onClick={this.addpub}>Add publisher</Button>
+                <Button type="button" color="warning" align="right" id="addsub" onClick={this.addsub}>Add subscriber</Button>
                 <Row>
                     <Col md={6}>
-                        <Card>
-                            <CardBody>
-                                <CardTitle tag="h5">Publisher</CardTitle>
-                                <Form onSubmit={this.publisher}>
-                                    <FormGroup row>
-                                        <Label htmlFor="pub_topic" md={3}>
-                                            Topic
-                                    </Label>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Input type="textarea" id="pub_topic" name="pub_topic" rows="2" value={this.state.pub_topic} onChange={this.handleInputChange}>
-                                        </Input>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label htmlFor="pub_messagebox" md={3}>
-                                            Message
-                                    </Label>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Input type="textarea" id="pub_messagebox" name="pub_messagebox" rows="2" value={this.state.pub_messagebox} onChange={this.handleInputChange}>
-                                        </Input>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Button
-                                            type="button"
-                                            onClick={this.publisher}
-                                            color="primary"
-                                            align="right"
-                                        >
-                                            Publish
-                                    </Button>
-                                    </FormGroup>
-                                </Form>
-                            </CardBody>
-                        </Card>
+                        <Publisher />
+                        {this.state.publishers}
                     </Col>
 
                     <Col md={6}>
-                        <Card>
-                            <CardBody>
-                                <CardTitle tag="h5">Subscriber</CardTitle>
-                                <Form onSubmit={this.subscriber}>
-                                    <FormGroup row>
-                                        <Label htmlFor="sub_topic" md={3}>
-                                            Topic
-                                    </Label>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Input type="textarea" id="sub_topic" name="sub_topic" rows="2" value={this.state.sub_topic} onChange={this.handleInputChange}>
-                                        </Input>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label htmlFor="sub_messagebox" md={3}>
-                                            Message
-                                    </Label>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Input type="textarea" id="sub_messagebox" name="sub_messagebox" rows="2" value={this.state.sub_messagebox} onChange={this.handleInputChange}>
-                                        </Input>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Button
-                                            type="button"
-                                            onClick={this.subscriber}
-                                            color="primary"
-                                            align="right"
-                                        >
-                                            Subscribe
-                                    </Button>
-                                    </FormGroup>
-                                </Form>
-                            </CardBody>
-                        </Card>
+                        <Subscriber />
+                        {this.state.subscribers}
                     </Col>
                 </Row>
+
             </div>
         );
     }
 }
 
 export default MQTTBox;
+
+

@@ -43,3 +43,7 @@ address{
   width: 90%;
 }
 
+#addpub, #addsub{
+  margin-right:20px;
+  margin-bottom:20px;
+}
