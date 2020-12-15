@@ -18,13 +18,16 @@ import { TOPIC_INFO, TOPIC_CREATE, TOPIC_DELETE } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 
 // const client = MQTTClient.client;
-
+var sliderValue = 30;
 const VolumeSlider = () => {
-    const [value, setValue] = React.useState(30);
+    const [value, setValue] = React.useState(sliderValue);
     return (
         <RangeSlider
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+                setValue(e.target.value);
+                sliderValue = e.target.value;
+            }}
             min={-180}
             max={180}
             size={'lg'}
@@ -46,7 +49,7 @@ class RobotControl extends PureComponent {
                 id: false,
                 xCoordinate: false,
                 yCoordinate: false,
-                heading: false
+                heading: sliderValue
             }
         };
         this.client = bindConnection();
@@ -84,23 +87,34 @@ class RobotControl extends PureComponent {
         });
     }
 
+    update(event) {
+        // TODO: invoke on update of text boxes or slider
+        // Publish to v1/localization/info
+        // Refer: https://docs.google.com/document/d/1mIJ9Q3BRfUMJ_ha4tbEqxWrE7v2qyNZcc4lWoRNcr6s/edit
+        // Please check the functionality before Pull Request
+    }
+
     create(event) {
         console.log('create');
-        console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Create \nCurrent State is: ' + JSON.stringify(this.state));
+        var message = JSON.stringify({
+            id: this.state.id,
+            x: this.state.xCoordinate,
+            y: this.state.yCoordinate,
+            heading: sliderValue
+        });
+        //alert(message);
+        console.log(message);
         event.preventDefault();
         this.client.subscribe(TOPIC_CREATE);
-        var message = JSON.stringify(this.state);
         this.client.publish(TOPIC_CREATE, message);
     }
 
     delete(event) {
         console.log('delete');
-        console.log('Current State is: ' + JSON.stringify(this.state));
-        alert('Delete \nCurrent State is: ' + JSON.stringify(this.state));
+        var message = JSON.stringify({ id: this.state.id });
+        console.log(message);
         event.preventDefault();
         this.client.subscribe(TOPIC_DELETE);
-        var message = JSON.stringify(this.state);
         this.client.publish(TOPIC_DELETE, message);
     }
 
@@ -110,12 +124,11 @@ class RobotControl extends PureComponent {
         });
     };
 
-    validate(id, xCoordinate, yCoordinate, heading) {
+    validate(id, xCoordinate, yCoordinate) {
         const errors = {
             id: '',
             xCoordinate: '',
-            yCoordinate: '',
-            heading: ''
+            yCoordinate: ''
         };
         const reg = /^\d+$/;
         if (this.state.touched.id && !reg.test(id))
@@ -153,7 +166,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="text"
+                                        type="number"
                                         id="id"
                                         name="id"
                                         placeholder="Id"
@@ -177,7 +190,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="text"
+                                        type="number"
                                         id="xCoordinate"
                                         name="xCoordinate"
                                         placeholder="x-coordinate"
@@ -205,7 +218,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="text"
+                                        type="numberr"
                                         id="yCoordinate"
                                         name="yCoordinate"
                                         placeholder="y-coordinate"
