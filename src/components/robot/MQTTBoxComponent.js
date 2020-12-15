@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-    Button,
-    Col,
-    Row
-} from 'reactstrap';
+import { Button, Col, Row } from 'reactstrap';
 import { TOPIC_INFO } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 import Publisher from './PublisherComponent';
@@ -17,7 +13,7 @@ class MQTTBox extends PureComponent {
         this.state = {
             publishers: [],
             subscribers: []
-        }
+        };
         this.client = bindConnection();
     }
 
@@ -45,38 +41,38 @@ class MQTTBox extends PureComponent {
         copyPublishers.splice(index, 1);
         this.setState({
             publishers: copyPublishers
-        })
-    }
+        });
+    };
 
     addpub = () => {
         this.pubcount = this.pubcount + 1;
-        const copyPublishers = Object.assign([], this.state.publishers)
+        const copyPublishers = Object.assign([], this.state.publishers);
         copyPublishers.push({
             id: this.pubcount
-        })
+        });
         this.setState({
             publishers: copyPublishers
-        })
-    }
+        });
+    };
 
     deletesub = (index) => {
         const copySubscribers = Object.assign([], this.state.subscribers);
         copySubscribers.splice(index, 1);
         this.setState({
             subscribers: copySubscribers
-        })
-    }
+        });
+    };
 
     addsub = () => {
         this.subcount = this.subcount + 1;
-        const copySubscribers = Object.assign([], this.state.subscribers)
+        const copySubscribers = Object.assign([], this.state.subscribers);
         copySubscribers.push({
             id: this.subcount
-        })
+        });
         this.setState({
             subscribers: copySubscribers
-        })
-    }
+        });
+    };
 
     render() {
         return (
@@ -89,44 +85,52 @@ class MQTTBox extends PureComponent {
                     laborum et dolorum fuga.
                 </p>
 
-                <Button type="button" color="success" align="right" id="addpub" onClick={this.addpub}>Add publisher</Button>
-                <Button type="button" color="warning" align="right" id="addsub" onClick={this.addsub}>Add subscriber</Button>
+                <Button
+                    type="button"
+                    color="success"
+                    align="right"
+                    id="addpub"
+                    onClick={this.addpub}
+                >
+                    Add publisher
+                </Button>
+                <Button
+                    type="button"
+                    color="warning"
+                    align="right"
+                    id="addsub"
+                    onClick={this.addsub}
+                >
+                    Add subscriber
+                </Button>
                 <Row>
                     <Col md={6}>
-                        {
-                            this.state.publishers.map((pub, index) => {
-                                return (
-                                    <Publisher
-                                        key={pub.id}
-                                        id={pub.id}
-                                        deletepub={this.deletepub.bind(this, index)}
-                                    />
-                                )
-                            })
-                        }
-
+                        {this.state.publishers.map((pub, index) => {
+                            return (
+                                <Publisher
+                                    key={pub.id}
+                                    id={pub.id}
+                                    deletepub={this.deletepub.bind(this, index)}
+                                />
+                            );
+                        })}
                     </Col>
 
                     <Col md={6}>
-                        {
-                            this.state.subscribers.map((sub, index) => {
-                                return (
-                                    <Subscriber
-                                        key={sub.id}
-                                        id={sub.id}
-                                        deletesub={this.deletesub.bind(this, index)}
-                                    />
-                                )
-                            })
-                        }
+                        {this.state.subscribers.map((sub, index) => {
+                            return (
+                                <Subscriber
+                                    key={sub.id}
+                                    id={sub.id}
+                                    deletesub={this.deletesub.bind(this, index)}
+                                />
+                            );
+                        })}
                     </Col>
                 </Row>
-
             </div>
         );
     }
 }
 
 export default MQTTBox;
-
-

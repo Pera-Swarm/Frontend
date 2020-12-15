@@ -13,7 +13,6 @@ import { TOPIC_INFO } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 
 class Publisher extends PureComponent {
-
     constructor(props) {
         super(props);
 
@@ -60,42 +59,54 @@ class Publisher extends PureComponent {
         event.preventDefault();
         this.client.publish(this.state.pub_topic, this.state.pub_messagebox);
         if (this.state.sub_topic === this.state.pub_topic) {
-            document.getElementById("sub_messagebox").innerHTML = this.state.pub_messagebox;
+            document.getElementById(
+                'sub_messagebox'
+            ).innerHTML = this.state.pub_messagebox;
         }
     }
 
     render() {
         return (
             <div>
-                <Card style={{ borderColor: "#218838" }}>
-                    <CardBody style={{ paddingBottom: "0px", paddingTop: "0px", margin: "0px" }}>
-                        <CardTitle tag="h5" style={{ paddingTop: "5px", margin: "0px" }}>Publisher
-                        <Button close onClick={this.props.deletepub} />
+                <Card style={{ borderColor: '#218838' }}>
+                    <CardBody
+                        style={{ paddingBottom: '0px', paddingTop: '0px', margin: '0px' }}
+                    >
+                        <CardTitle tag="h5" style={{ paddingTop: '5px', margin: '0px' }}>
+                            Publisher
+                            <Button close onClick={this.props.deletepub} />
                         </CardTitle>
                         <Form onSubmit={this.publisher}>
                             <FormGroup row>
                                 <div className="col-2">
-                                    <Label htmlFor="pub_topic">
-                                        Topic
-                                    </Label>
+                                    <Label htmlFor="pub_topic">Topic</Label>
                                 </div>
-                                <div className="col-1">
-                                </div>
+                                <div className="col-1"></div>
                                 <div className="col-9">
-                                    <Input type="textarea" id="pub_topic" name="pub_topic" rows="1" value={this.state.pub_topic} onChange={this.handleInputChange}>
-                                    </Input>
+                                    <Input
+                                        type="textarea"
+                                        id="pub_topic"
+                                        name="pub_topic"
+                                        rows="1"
+                                        value={this.state.pub_topic}
+                                        onChange={this.handleInputChange}
+                                    ></Input>
                                 </div>
                             </FormGroup>
                             <FormGroup row>
                                 <div className="col-2">
-                                    <Label htmlFor="pub_messagebox">
-                                        Message
-                                    </Label>
+                                    <Label htmlFor="pub_messagebox">Message</Label>
                                 </div>
                                 <div className="col-1">&nbsp;</div>
                                 <div className="col-9">
-                                    <Input type="textarea" id="pub_messagebox" name="pub_messagebox" rows="1" value={this.state.pub_messagebox} onChange={this.handleInputChange}>
-                                    </Input>
+                                    <Input
+                                        type="textarea"
+                                        id="pub_messagebox"
+                                        name="pub_messagebox"
+                                        rows="1"
+                                        value={this.state.pub_messagebox}
+                                        onChange={this.handleInputChange}
+                                    ></Input>
                                 </div>
                             </FormGroup>
                             <FormGroup row>
