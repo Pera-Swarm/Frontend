@@ -9,16 +9,15 @@ import {
     FormGroup,
     Label,
     Col,
+    Row,
     FormFeedback
 } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-// import MQTTClient from './MQTTClientComponent';
-
 import { TOPIC_INFO, TOPIC_CREATE, TOPIC_DELETE } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 
-// const client = MQTTClient.client;
 var sliderValue = 30;
+
 const VolumeSlider = () => {
     const [value, setValue] = React.useState(sliderValue);
     return (
@@ -56,6 +55,7 @@ class RobotControl extends PureComponent {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.create = this.create.bind(this);
         this.delete = this.delete.bind(this);
+        this.update = this.update.bind(this);
     }
 
     componentDidMount() {
@@ -88,10 +88,18 @@ class RobotControl extends PureComponent {
     }
 
     update(event) {
-        // TODO: invoke on update of text boxes or slider
-        // Publish to v1/localization/info
-        // Refer: https://docs.google.com/document/d/1mIJ9Q3BRfUMJ_ha4tbEqxWrE7v2qyNZcc4lWoRNcr6s/edit
-        // Please check the functionality before Pull Request
+        console.log('update');
+        var message = JSON.stringify({
+            id: this.state.id,
+            x: this.state.xCoordinate,
+            y: this.state.yCoordinate,
+            heading: sliderValue
+        });
+        //alert(message);
+        console.log(message);
+        event.preventDefault();
+        this.client.subscribe(TOPIC_INFO);
+        this.client.publish(TOPIC_INFO, message);
     }
 
     create(event) {
@@ -130,12 +138,13 @@ class RobotControl extends PureComponent {
             xCoordinate: '',
             yCoordinate: ''
         };
-        const reg = /^\d+$/;
-        if (this.state.touched.id && !reg.test(id))
+        const regid = /^\d+$/;
+        const regcordinates = /^-?\d*\.{0,1}\d+$/;
+        if (this.state.touched.id && !regid.test(id))
             errors.id = 'Id should contain only numbers';
-        if (this.state.touched.xCoordinate && !reg.test(xCoordinate))
+        if (this.state.touched.xCoordinate && !regcordinates.test(xCoordinate))
             errors.xCoordinate = 'x-Coordinate should contain only numbers';
-        if (this.state.touched.yCoordinate && !reg.test(yCoordinate))
+        if (this.state.touched.yCoordinate && !regcordinates.test(yCoordinate))
             errors.yCoordinate = 'y-Coordinate should contain only numbers';
 
         return errors;
@@ -230,6 +239,15 @@ class RobotControl extends PureComponent {
                                     />
                                     <FormFeedback>{errors.yCoordinate}</FormFeedback>
                                 </Col>
+                                <Col md={{ size: 3, offset: 3 }}>
+                                    <Button
+                                        type="button"
+                                        onClick={this.update}
+                                        color="primary"
+                                    >
+                                        Update
+                                    </Button>
+                                </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label htmlFor="heading" md={3}>
@@ -242,6 +260,8 @@ class RobotControl extends PureComponent {
                         </Form>
                     </CardBody>
                 </Card>
+                <br></br>
+              
             </div>
         );
     }
