@@ -47,10 +47,10 @@ class RobotControl extends PureComponent {
                 heading: false
             },
             data: {
-                id: 0,
-                x: 0,
-                y: 0,
-                heading: 0
+                id: undefined,
+                x: undefined,
+                y: undefined,
+                heading: undefined
             },
             isConnected: false
         };
@@ -81,7 +81,9 @@ class RobotControl extends PureComponent {
     }
 
     componentWillUnmount() {
-        this.client.disconnect();
+        if(!this.client.isConnected()){
+            this.client.disconnect();
+        }
     }
 
     handleInputChange(event) {
@@ -113,10 +115,10 @@ class RobotControl extends PureComponent {
         event.preventDefault();
         if (this.client.isConnected()) {
             console.log('delete');
+            this.client.subscribe(TOPIC_DELETE);
             var message = JSON.stringify({ ...this.state.data, heading: sliderValue });
             //alert(message);
             console.log(message);
-            this.client.subscribe(TOPIC_DELETE);
             this.client.publish(TOPIC_DELETE, message);
         }
     }
@@ -125,9 +127,8 @@ class RobotControl extends PureComponent {
         event.preventDefault();
         if (this.client.isConnected()) {
             console.log('update');
-            const { id, heading, x, y } = this.state.data;
             this.client.subscribe(TOPIC_INFO);
-            var message = JSON.stringify({ id, x, y, heading: sliderValue });
+            var message = JSON.stringify({ ...this.state.data, heading: sliderValue });
             //alert(message);
             console.log(message);
             this.client.publish(TOPIC_INFO, message);
@@ -234,7 +235,7 @@ class RobotControl extends PureComponent {
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="numberr"
+                                        type="number"
                                         id="y"
                                         name="y"
                                         placeholder="y-coordinate"
