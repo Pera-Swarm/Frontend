@@ -81,7 +81,7 @@ class RobotControl extends PureComponent {
     }
 
     componentWillUnmount() {
-        if(!this.client.isConnected()){
+        if (!this.client.isConnected()) {
             this.client.disconnect();
         }
     }
