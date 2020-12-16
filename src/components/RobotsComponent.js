@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Select from 'react-select';
 import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 import { Button } from 'reactstrap';
 import RobotControl from './robot/ControlComponent';
-import MQTTBox from './robot/MQTTBoxComponent';
+// import MQTTBox from './robot/MQTTBox';
 import MQTTBox from './robot/MBox';
 
 const options = [
@@ -18,7 +18,7 @@ const options = [
     { value: '9', label: '9' }
 ];
 
-class Robots extends Component {
+class Robots extends PureComponent {
     state = {
         selectedOption: null
     };
