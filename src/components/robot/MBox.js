@@ -77,7 +77,7 @@ class MBox extends Component {
                                     Add Publisher
                                 </Button>
                                 {this.state.publishers.map((pub, index) => {
-                                    return <Publisher />;
+                                    return <Publisher key={index} />;
                                 })}
                             </CardBody>
                         </Card>
@@ -94,7 +94,13 @@ class MBox extends Component {
                                     Add Subscriber
                                 </Button>
                                 {this.state.subscribers.map((sub, index) => {
-                                    return <Subscriber />;
+                                    return (
+                                        <Subscriber
+                                            key={index}
+                                            id={sub.id}
+                                            client={sub.client}
+                                        />
+                                    );
                                 })}
                             </CardBody>
                         </Card>

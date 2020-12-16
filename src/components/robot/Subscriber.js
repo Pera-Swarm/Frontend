@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Card,
     CardBody,
@@ -7,123 +7,154 @@ import {
     Input,
     Form,
     FormGroup,
-    Label
+    Label,
+    FormFeedback,
+    ListGroupItem,
+    ListGroup
 } from 'reactstrap';
-import { TOPIC_INFO } from '../../config/topics';
-import { bindConnection } from '../../services/mqtt';
 
-class MQTTBox extends PureComponent {
-    constructor(props) {
-        super(props);
+const MQTTBox = (props) => {
+    const { id, client: mqttClient } = props;
+    const [topic, setTopic] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
+    const [client, setClient] = useState(mqttClient);
+    const [messages, setMessages] = useState([]);
 
-        this.state = {
-            sub_topic: '',
-            sub_messagebox: ''
-        };
-        this.client = bindConnection();
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.subscriber = this.subscriber.bind(this);
-    }
-
-    componentDidMount() {
-        this.client.createConnection({
-            onSuccess: () => {
-                console.log('MQTT:connected');
-                // Default subscription
-                this.client.subscribe(TOPIC_INFO);
-                this.client.onMessageArrived = this.onMessageArrived;
-                this.client.onConnectionLost = this.onConnectionLost;
-            },
-            onFailure: () => {
-                console.log('MQTT: connection failed');
-            }
-        });
-    }
-
-    componentWillUnmount() {
-        if (!this.client.isConnected()) {
-            this.client.disconnect();
+    useEffect(() => {
+        console.log('mounted & prop changed', client, id, props);
+        if (client === undefined) {
+            const { client: mqttClient } = props;
+            setClient(mqttClient);
         }
-    }
+        return () => {
+            console.log('cleanup');
+        };
+    }, [client, props, id]);
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        this.setState({
-            [name]: value
-        });
-    }
-
-    subscriber(event) {
+    const handleSubsciption = (event) => {
         console.log('subscribe');
         event.preventDefault();
-        this.client.subscribe(this.state.sub_topic);
-    }
+        if (topic !== '') {
+            if (!client.isConnected()) {
+                client.createConnection(
+                    {
+                        onSuccess: () => {
+                            console.log('MQTT:connected from subscriber:', id);
+                            // subscription
+                            client.subscribe(topic);
+                            setSubscribed(true);
+                            client.onMessageArrived = onMessageArrived;
+                            client.onConnectionLost = onConnectionLost;
+                        },
+                        onFailure: () => {
+                            console.log('MQTT: connection failed');
+                        }
+                    },
+                    (err) => {
+                        if (!err) {
+                            client.subscribe(topic);
+                        }
+                    }
+                );
+            }
+        }
+    };
 
-    render() {
-        return (
-            <div className="my-3">
-                <Card style={{ borderColor: '#E0A800' }}>
-                    <CardBody
-                        style={{ paddingBottom: '0px', paddingTop: '0px', margin: '0px' }}
-                    >
-                        <CardTitle tag="h5" style={{ paddingTop: '5px', margin: '0px' }}>
-                            Subscriber
-                            <Button close onClick={this.props.deletesub} />
-                        </CardTitle>
-                        <Form onSubmit={this.subscriber}>
-                            <FormGroup row>
-                                <div className="col-2">
-                                    <Label htmlFor="sub_topic">Topic</Label>
-                                </div>
-                                <div className="col-1"></div>
-                                <div className="col-9">
-                                    <Input
-                                        type="textarea"
-                                        id="sub_topic"
-                                        name="sub_topic"
-                                        rows="1"
-                                        value={this.state.sub_topic}
-                                        onChange={this.handleInputChange}
-                                    ></Input>
-                                </div>
-                            </FormGroup>
-                            <FormGroup row>
-                                <div className="col-2">
-                                    <Label htmlFor="sub_messagebox">Message</Label>
-                                </div>
-                                <div className="col-1">&nbsp;</div>
-                                <div className="col-9">
-                                    <Input
-                                        type="textarea"
-                                        id="sub_messagebox"
-                                        name="sub_messagebox"
-                                        rows="1"
-                                        value={this.state.sub_messagebox}
-                                        onChange={this.handleInputChange}
-                                    ></Input>
-                                </div>
-                            </FormGroup>
-                            <FormGroup row>
-                                <div className="col-3">
+    const onMessageArrived = (e) => {
+        console.log(e);
+        const newMessage = JSON.parse(e.payloadString);
+        const prevMessages = messages;
+        prevMessages.push(newMessage);
+        setMessages(prevMessages);
+        console.log(messages);
+    };
+
+    const onConnectionLost = (e) => {
+        console.log(e);
+        setTopic('');
+        setSubscribed(false);
+        setClient(undefined);
+    };
+
+    const handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        setTopic(value);
+    };
+
+    return (
+        <div className="my-3">
+            <Card style={{ borderColor: '#E0A800' }}>
+                <CardBody
+                    style={{ paddingBottom: '0px', paddingTop: '0px', margin: '0px' }}
+                >
+                    <CardTitle tag="h5" style={{ paddingTop: '5px', margin: '0px' }}>
+                        Subscriber
+                        <Button close onClick={props.deletesub} />
+                    </CardTitle>
+                    <Form onSubmit={handleSubsciption}>
+                        <FormGroup row className="mt-3">
+                            <div className="col-2">
+                                <Label htmlFor="topic">Topic</Label>
+                            </div>
+                            {/* <div className="col-1"></div> */}
+                            <div className="col">
+                                <Input
+                                    type="textarea"
+                                    id="topic"
+                                    name="topic"
+                                    rows="1"
+                                    width={'100%'}
+                                    value={topic}
+                                    valid={topic !== ''}
+                                    invalid={topic === ''}
+                                    onChange={handleInputChange}
+                                    disabled={subscribed}
+                                ></Input>
+                                <FormFeedback>
+                                    {topic === '' || typeof topic === 'string'
+                                        ? 'Topic should contain a valid string'
+                                        : null}
+                                </FormFeedback>
+                            </div>
+                        </FormGroup>
+                        <FormGroup row>
+                            <div className="col-3">
+                                {!subscribed && (
                                     <Button
                                         type="button"
-                                        onClick={this.subscriber}
+                                        onClick={handleSubsciption}
                                         color="warning"
                                         align="right"
                                     >
                                         Subscribe
                                     </Button>
-                                </div>
-                            </FormGroup>
-                        </Form>
-                    </CardBody>
-                </Card>
-            </div>
-        );
-    }
-}
+                                )}
+                            </div>
+                        </FormGroup>
+                    </Form>
+                    {messages.length !== 0 ? <h5>Messages</h5> : null}
+                    <ListGroup className="mb-3">
+                        {subscribed &&
+                            messages.map((message, index) => {
+                                console.log(message);
+                                return (
+                                    <ListGroupItem
+                                        // active
+                                        tag="button"
+                                        action
+                                        key={index}
+                                    >
+                                        Cras justo odio
+                                    </ListGroupItem>
+                                );
+                            })}
+                    </ListGroup>
+                </CardBody>
+            </Card>
+        </div>
+    );
+    // }
+};
 
 export default MQTTBox;
