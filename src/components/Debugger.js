@@ -18,7 +18,7 @@ const options = [
     { value: '9', label: '9' }
 ];
 
-class Robots extends PureComponent {
+class Debugger extends PureComponent {
     state = {
         selectedOption: null
     };
@@ -35,7 +35,7 @@ class Robots extends PureComponent {
                     <div className="col-12">
                         <div className="container striped bordered hover">
                             <div className="row  d-flex align-items-center">
-                                <div className="col-2 col-sm-2">Robots</div>
+                                <div className="col-2 col-sm-2">Debugger</div>
                                 <div className="col-2 col-sm-4">
                                     <Select
                                         style={{ width: '30px' }}
@@ -158,4 +158,4 @@ class Robots extends PureComponent {
     }
 }
 
-export default Robots;
+export default Debugger;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Visualizer from './VisualizerComponent';
-import Robots from './RobotsComponent';
+import Debugger from './Debugger';
 import Manager from './ManagerComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -19,7 +19,7 @@ class Main extends Component {
                     <Route path="/home" component={Home} />
                     <Route path="/manager" component={Manager} />
                     <Route path="/visualizer" component={Visualizer} />
-                    <Route exact path="/robots" component={Robots} />
+                    <Route exact path="/debugger" component={Debugger} />
                     <Route exact path="/settings" component={Settings} />
                     <Redirect to="/home" />
                 </Switch>
