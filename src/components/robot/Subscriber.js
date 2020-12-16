@@ -64,7 +64,7 @@ class MQTTBox extends PureComponent {
 
     render() {
         return (
-            <div className="m-3">
+            <div className="my-3">
                 <Card style={{ borderColor: '#E0A800' }}>
                     <CardBody
                         style={{ paddingBottom: '0px', paddingTop: '0px', margin: '0px' }}
