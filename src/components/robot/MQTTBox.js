@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { Button, Col, Row } from 'reactstrap';
 import { TOPIC_INFO } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
-import Publisher from './PublisherComponent';
-import Subscriber from './SubscriberComponent';
+import Publisher from './Publisher';
+import Subscriber from './Subscriber';
 
 class MQTTBox extends PureComponent {
     constructor(props) {
@@ -33,44 +33,46 @@ class MQTTBox extends PureComponent {
     }
 
     componentWillUnmount() {
-        this.client.disconnect();
+        if (!this.client.isConnected()) {
+            this.client.disconnect();
+        }
     }
 
     deletepub = (index) => {
-        const copyPublishers = Object.assign([], this.state.publishers);
-        copyPublishers.splice(index, 1);
+        const prevPublishers = Object.assign([], this.state.publishers);
+        prevPublishers.splice(index, 1);
         this.setState({
-            publishers: copyPublishers
+            publishers: prevPublishers
         });
     };
 
     addpub = () => {
         this.pubcount = this.pubcount + 1;
-        const copyPublishers = Object.assign([], this.state.publishers);
-        copyPublishers.push({
+        const prevPublishers = Object.assign([], this.state.publishers);
+        prevPublishers.push({
             id: this.pubcount
         });
         this.setState({
-            publishers: copyPublishers
+            publishers: prevPublishers
         });
     };
 
     deletesub = (index) => {
-        const copySubscribers = Object.assign([], this.state.subscribers);
-        copySubscribers.splice(index, 1);
+        const prevSubscribers = Object.assign([], this.state.subscribers);
+        prevSubscribers.splice(index, 1);
         this.setState({
-            subscribers: copySubscribers
+            subscribers: prevSubscribers
         });
     };
 
     addsub = () => {
         this.subcount = this.subcount + 1;
-        const copySubscribers = Object.assign([], this.state.subscribers);
-        copySubscribers.push({
+        const prevSubscribers = Object.assign([], this.state.subscribers);
+        prevSubscribers.push({
             id: this.subcount
         });
         this.setState({
-            subscribers: copySubscribers
+            subscribers: prevSubscribers
         });
     };
 
@@ -78,11 +80,8 @@ class MQTTBox extends PureComponent {
         return (
             <div>
                 <p>
-                    At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                    blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
-                    et quas molestias excepturi sint occaecati cupiditate non provident,
-                    similique sunt in culpa qui officia deserunt mollitia animi, id est
-                    laborum et dolorum fuga.
+                    A Sandbox for testing MQTT messages and responses that are unique to
+                    "pera-swarm".
                 </p>
 
                 <Button

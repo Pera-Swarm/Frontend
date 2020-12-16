@@ -4,6 +4,7 @@ import { Tab, Row, Col, Nav } from 'react-bootstrap'; // Tabs
 import { Button } from 'reactstrap';
 import RobotControl from './robot/ControlComponent';
 import MQTTBox from './robot/MQTTBoxComponent';
+import MQTTBox from './robot/MBox';
 
 const options = [
     { value: '1', label: '1' },

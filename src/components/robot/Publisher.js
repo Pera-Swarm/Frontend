@@ -41,7 +41,9 @@ class Publisher extends PureComponent {
     }
 
     componentWillUnmount() {
-        this.client.disconnect();
+        if (!this.client.isConnected()) {
+            this.client.disconnect();
+        }
     }
 
     handleInputChange(event) {
@@ -67,7 +69,7 @@ class Publisher extends PureComponent {
 
     render() {
         return (
-            <div>
+            <div className="my-3">
                 <Card style={{ borderColor: '#218838' }}>
                     <CardBody
                         style={{ paddingBottom: '0px', paddingTop: '0px', margin: '0px' }}
@@ -110,7 +112,6 @@ class Publisher extends PureComponent {
                                 </div>
                             </FormGroup>
                             <FormGroup row>
-                                <div className="col-8">&nbsp;</div>
                                 <div className="col-3">
                                     <Button
                                         type="button"
