@@ -9,16 +9,15 @@ import {
     FormGroup,
     Label,
     Col,
+    Row,
     FormFeedback
 } from 'reactstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-// import MQTTClient from './MQTTClientComponent';
-
 import { TOPIC_INFO, TOPIC_CREATE, TOPIC_DELETE } from '../../config/topics';
 import { bindConnection } from '../../services/mqtt';
 
-// const client = MQTTClient.client;
 var sliderValue = 30;
+
 const VolumeSlider = () => {
     const [value, setValue] = React.useState(sliderValue);
     return (
@@ -41,27 +40,35 @@ class RobotControl extends PureComponent {
         super(props);
 
         this.state = {
-            id: '',
-            xCoordinate: '',
-            yCoordinate: '',
-            heading: '',
             touched: {
                 id: false,
-                xCoordinate: false,
-                yCoordinate: false,
-                heading: sliderValue
-            }
+                x: false,
+                y: false,
+                heading: false
+            },
+            data: {
+                id: undefined,
+                x: undefined,
+                y: undefined,
+                heading: undefined
+            },
+            isConnected: false
         };
         this.client = bindConnection();
         this.handleInputChange = this.handleInputChange.bind(this);
         this.create = this.create.bind(this);
         this.delete = this.delete.bind(this);
+        this.update = this.update.bind(this);
     }
 
     componentDidMount() {
+        console.log('ccc', this.state.isConnected);
         this.client.createConnection({
             onSuccess: () => {
                 console.log('MQTT:connected');
+                this.setState({
+                    isConnected: true
+                });
                 // Default subscription
                 this.client.subscribe(TOPIC_INFO);
                 this.client.onMessageArrived = this.onMessageArrived;
@@ -74,79 +81,89 @@ class RobotControl extends PureComponent {
     }
 
     componentWillUnmount() {
-        this.client.disconnect();
+        if (!this.client.isConnected()) {
+            this.client.disconnect();
+        }
     }
 
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
+        const { data } = this.state;
         this.setState({
-            [name]: value
+            data: {
+                ...data,
+                [name]: value
+            }
         });
-    }
-
-    update(event) {
-        // TODO: invoke on update of text boxes or slider
-        // Publish to v1/localization/info
-        // Refer: https://docs.google.com/document/d/1mIJ9Q3BRfUMJ_ha4tbEqxWrE7v2qyNZcc4lWoRNcr6s/edit
-        // Please check the functionality before Pull Request
     }
 
     create(event) {
-        console.log('create');
-        var message = JSON.stringify({
-            id: this.state.id,
-            x: this.state.xCoordinate,
-            y: this.state.yCoordinate,
-            heading: sliderValue
-        });
-        //alert(message);
-        console.log(message);
         event.preventDefault();
-        this.client.subscribe(TOPIC_CREATE);
-        this.client.publish(TOPIC_CREATE, message);
+        if (this.client.isConnected()) {
+            console.log('create', this.state.isConnected);
+            this.client.subscribe(TOPIC_CREATE);
+            var message = JSON.stringify({ ...this.state.data, heading: sliderValue });
+            console.log(message);
+            //alert(message);
+            this.client.publish(TOPIC_CREATE, message);
+        }
     }
 
     delete(event) {
-        console.log('delete');
-        var message = JSON.stringify({ id: this.state.id });
-        console.log(message);
         event.preventDefault();
-        this.client.subscribe(TOPIC_DELETE);
-        this.client.publish(TOPIC_DELETE, message);
+        if (this.client.isConnected()) {
+            console.log('delete');
+            this.client.subscribe(TOPIC_DELETE);
+            var message = JSON.stringify({ ...this.state.data, heading: sliderValue });
+            //alert(message);
+            console.log(message);
+            this.client.publish(TOPIC_DELETE, message);
+        }
+    }
+
+    update(event) {
+        event.preventDefault();
+        if (this.client.isConnected()) {
+            console.log('update');
+            this.client.subscribe(TOPIC_INFO);
+            var message = JSON.stringify({ ...this.state.data, heading: sliderValue });
+            //alert(message);
+            console.log(message);
+            this.client.publish(TOPIC_INFO, message);
+        }
     }
 
     handleBlur = (field) => (evt) => {
+        const { touched } = this.state;
         this.setState({
-            touched: { ...this.state.touched, [field]: true }
+            touched: { ...touched, [field]: true }
         });
     };
 
-    validate(id, xCoordinate, yCoordinate) {
+    validate(id, x, y, heading) {
         const errors = {
             id: '',
-            xCoordinate: '',
-            yCoordinate: ''
+            x: '',
+            y: '',
+            heading: ''
         };
-        const reg = /^\d+$/;
-        if (this.state.touched.id && !reg.test(id))
+        const regid = /^\d+$/;
+        const regcordinates = /^-?\d*\.{0,1}\d+$/;
+        if (this.state.touched.id && !regid.test(id))
             errors.id = 'Id should contain only numbers';
-        if (this.state.touched.xCoordinate && !reg.test(xCoordinate))
-            errors.xCoordinate = 'x-Coordinate should contain only numbers';
-        if (this.state.touched.yCoordinate && !reg.test(yCoordinate))
-            errors.yCoordinate = 'y-Coordinate should contain only numbers';
-
+        if (this.state.touched.x && !regid.test(x))
+            errors.x = 'x-Coordinate should contain only numbers';
+        if (this.state.touched.y && !regid.test(y))
+            errors.y = 'y-Coordinate should contain only numbers';
         return errors;
     }
 
     render() {
-        const errors = this.validate(
-            this.state.id,
-            this.state.xCoordinate,
-            this.state.yCoordinate
-        );
+        const { data, touched } = this.state;
+        const { id, heading, x, y } = data;
+        const errors = this.validate(id, x, y, heading);
         return (
             <div>
                 <p>
@@ -170,8 +187,8 @@ class RobotControl extends PureComponent {
                                         id="id"
                                         name="id"
                                         placeholder="Id"
-                                        value={this.state.id}
-                                        valid={errors.id === ''}
+                                        value={id}
+                                        valid={errors.id === '' && touched.id}
                                         invalid={errors.id !== ''}
                                         onBlur={this.handleBlur('id')}
                                         onChange={this.handleInputChange}
@@ -185,22 +202,22 @@ class RobotControl extends PureComponent {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label htmlFor="xCoordinate" md={3}>
+                                <Label htmlFor="x" md={3}>
                                     x-coordinate
                                 </Label>
                                 <Col md={3}>
                                     <Input
                                         type="number"
-                                        id="xCoordinate"
-                                        name="xCoordinate"
+                                        id="x"
+                                        name="x"
                                         placeholder="x-coordinate"
-                                        value={this.state.xCoordinate}
-                                        valid={errors.xCoordinate === ''}
-                                        invalid={errors.xCoordinate !== ''}
-                                        onBlur={this.handleBlur('xCoordinate')}
+                                        value={x}
+                                        valid={errors.x === '' && touched.x}
+                                        invalid={errors.x !== ''}
+                                        onBlur={this.handleBlur('x')}
                                         onChange={this.handleInputChange}
                                     />
-                                    <FormFeedback>{errors.xCoordinate}</FormFeedback>
+                                    <FormFeedback>{errors.x}</FormFeedback>
                                 </Col>
                                 <Col md={{ size: 3, offset: 3 }}>
                                     <Button
@@ -213,22 +230,31 @@ class RobotControl extends PureComponent {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label htmlFor="yCoordinate" md={3}>
+                                <Label htmlFor="y" md={3}>
                                     y-coordinate
                                 </Label>
                                 <Col md={3}>
                                     <Input
-                                        type="numberr"
-                                        id="yCoordinate"
-                                        name="yCoordinate"
+                                        type="number"
+                                        id="y"
+                                        name="y"
                                         placeholder="y-coordinate"
-                                        value={this.state.yCoordinate}
-                                        valid={errors.yCoordinate === ''}
-                                        invalid={errors.yCoordinate !== ''}
-                                        onBlur={this.handleBlur('yCoordinate')}
+                                        value={y}
+                                        valid={errors.y === '' && touched.y}
+                                        invalid={errors.y !== ''}
+                                        onBlur={this.handleBlur('y')}
                                         onChange={this.handleInputChange}
                                     />
-                                    <FormFeedback>{errors.yCoordinate}</FormFeedback>
+                                    <FormFeedback>{errors.y}</FormFeedback>
+                                </Col>
+                                <Col md={{ size: 3, offset: 3 }}>
+                                    <Button
+                                        type="button"
+                                        onClick={this.update}
+                                        color="primary"
+                                    >
+                                        Update
+                                    </Button>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -242,6 +268,7 @@ class RobotControl extends PureComponent {
                         </Form>
                     </CardBody>
                 </Card>
+                <br></br>
             </div>
         );
     }
